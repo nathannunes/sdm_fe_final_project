@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Layout from './pages/Layout';
@@ -7,6 +7,8 @@ import Calendar from './pages/Calendar';
 import Schedule from './pages/Schedule';
 import Catalog from './pages/Catalog';
 import NoPage from './pages/NoPage';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
