@@ -12,6 +12,9 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [isRegister, setIsRegister] = useState(false);
 
+    let url="";
+    let response=null;
+
     const submitHandler = (event) => {
         event.preventDefault();
 
@@ -23,13 +26,75 @@ const Login = () => {
         if (isRegister) {
             // set url to register server
             console.log("contact registration service");
+            url = "https://locathost:8080/api/auth/register";                
         }
         else {
             // set url to login server
             console.log("contact login service");
+            url = "https://locathost:8080/api/auth/login";
+        
+        fetch(url, {
+            headers: { 
+                "Content-Type": "application/json" 
+            },
+            method: "POST",
+            body: {
+                "username" : "testuser",
+                "password" : "1234"
+            }
+            }).then((response) => {
+                if (response.status === 200) {
+                    if (isRegister) return response.json();
+                    console.log(response.headers.get("authorization"));
+                }
+            }).then((data) => {
+                console.log(data.token);
+            });
+
+            if(isRegister){
+                response = {
+                    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjUiLCJpYXQiOjE2Nzc4NTEyNTcsImV4cCI6MTY3Nzg1MjY5N30.pJWgqDbTyk2EfVHmCUnpRNKIqmot1L2FXI4WrAL363I",
+                    "user": {
+                        "id": 4,
+                        "username": email,
+                        "password": password,
+                        "enabled": true,
+                        "role": [
+                            {
+                                "id": 0,
+                                "authority": "USER",
+                                "user": null
+                            }
+                        ],
+                        "accountNonExpired": true,
+                        "accountNonLocked": true,
+                    }
+                };
+            }
+            else {
+                response = {
+                    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjUiLCJpYXQiOjE2Nzc4NTEyNTcsImV4cCI6MTY3Nzg1MjY5N30.pJWgqDbTyk2EfVHmCUnpRNKIqmot1L2FXI4WrAL363I",
+                    "user": {
+                        "id": 4,
+                        "username": email,
+                        "password": password,
+                        "enabled": true,
+                        "role": [
+                            {
+                                "id": 0,
+                                "authority": "USER",
+                                "user": null
+                            }
+                        ],
+                        "accountNonExpired": true,
+                        "accountNonLocked": true,
+                        "credentialsNonExpired": true
+                    }
+                };
+            }
         }
 
-        // fetch call here
+
     }
 
     const emailHandler = (event) => {
