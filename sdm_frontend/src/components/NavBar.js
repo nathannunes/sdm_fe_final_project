@@ -13,10 +13,10 @@ function NavBar() {
     }
 
     return (
-        <Navbar className="navbar-custom" 
+        <Navbar className="navbar-custom"
                 variant="dark"
                 expand="md">
-
+            <Container>
                 <Navbar.Brand to="/">CPT</Navbar.Brand>
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -29,6 +29,7 @@ function NavBar() {
                         <Nav><Button bsPrefix="btn-custom" className="logout" onClick={logoutHandler}>Logout</Button></Nav>
                     </Nav>
                 </Navbar.Collapse>
+            </Container>
         </Navbar>
   );
 }

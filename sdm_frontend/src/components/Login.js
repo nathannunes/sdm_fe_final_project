@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 
+import useToken from './useToken';
+import useCredentials from './useCredentials';
+
 import './Card.css';
 import './Button.css';
 
-const Login = () => {
+const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isRegister, setIsRegister] = useState(false);
 
+    const {token, setToken} = useToken();
+    const {user, role, setUser, setRole} = useCredentials();
+    
     let url="";
     let response=null;
 
@@ -33,26 +40,27 @@ const Login = () => {
             console.log("contact login service");
             url = "https://locathost:8080/api/auth/login";
         
-        fetch(url, {
-            headers: { 
-                "Content-Type": "application/json" 
-            },
-            method: "POST",
-            body: {
-                "username" : "testuser",
-                "password" : "1234"
-            }
-            }).then((response) => {
-                if (response.status === 200) {
-                    if (isRegister) return response.json();
-                    console.log(response.headers.get("authorization"));
-                }
-            }).then((data) => {
-                console.log(data.token);
-            });
+        // fetch(url, {
+        //     headers: { 
+        //         "Content-Type": "application/json" 
+        //     },
+        //     method: "POST",
+        //     body: {
+        //         "username" : "testuser",
+        //         "password" : "1234"
+        //     }
+        //     }).then((response) => {
+        //         if (response.status === 200) {
+        //             if (isRegister) return response.json();
+        //             console.log(response.headers.get("authorization"));
+        //         }
+        //     }).then((data) => {
+        //         console.log(data.token);
+        //     });
 
             if(isRegister){
                 response = {
+                    "status": 200,
                     "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjUiLCJpYXQiOjE2Nzc4NTEyNTcsImV4cCI6MTY3Nzg1MjY5N30.pJWgqDbTyk2EfVHmCUnpRNKIqmot1L2FXI4WrAL363I",
                     "user": {
                         "id": 4,
@@ -73,6 +81,7 @@ const Login = () => {
             }
             else {
                 response = {
+                    "status": 200,
                     "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjUiLCJpYXQiOjE2Nzc4NTEyNTcsImV4cCI6MTY3Nzg1MjY5N30.pJWgqDbTyk2EfVHmCUnpRNKIqmot1L2FXI4WrAL363I",
                     "user": {
                         "id": 4,
@@ -91,6 +100,13 @@ const Login = () => {
                         "credentialsNonExpired": true
                     }
                 };
+            }
+
+            if (response.status === 200){
+                setToken(response.token);
+                setUser(response.user.username);
+                setRole(response.user.role[0].authority);
+                props.reloadPage(response.token);
             }
         }
 
