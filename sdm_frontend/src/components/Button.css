@@ -1,0 +1,10 @@
+.btn-custom {
+    background-color: #411988;
+    color: white;
+    border-radius: 5px;
+}
+
+.btn-custom.logout{
+    background-color: orange;
+    color: black;
+}
