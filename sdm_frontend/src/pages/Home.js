@@ -15,7 +15,6 @@ function Home() {
     return( 
         <div style={{backgroundColor: 'whitesmoke'}}>
             <h1 align="center" style={{color: "#e27f0b"}}>Welcome to Curriculum Plan Tracker</h1>
-            <h3 align="center" style={{color: "#e27f0b"}}>Please log in to continue</h3>
             {!isLoggedIn && <Login reloadPage={reload} />}
             {isLoggedIn && <Dashboard />}
         </div>

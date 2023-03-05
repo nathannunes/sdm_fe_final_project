@@ -3,10 +3,13 @@ import React, { useState } from 'react';
 import Login from '../components/Login';
 import useToken from '../components/useToken';
 
+import CredBadge from '../components/CredBadge';
+import useCredentials from '../components/useCredentials';
 
 function Calendar() {
     const {token, setToken} = useToken();
-    const [isLoggedIn, setLogin] = useState(!!token)
+    const [isLoggedIn, setLogin] = useState(!!token);
+    const {user, role} = useCredentials();
 
     const reload = (newToken) => {
       setLogin(!!newToken);
@@ -21,7 +24,12 @@ function Calendar() {
         );
     }
 
-    return( <h1>placeholder: academic calendar</h1> );
+    return( 
+        <div style={{backgroundColor: 'whitesmoke'}}>
+          <h1 align="center" style={{color: "#e27f0b"}}>Placeholder: academic calendar</h1>
+          <CredBadge userName={user} userRole={role} />
+        </div>
+    );
 }
 
 export default Calendar;
