@@ -8,22 +8,17 @@ import Schedule from './pages/Schedule';
 import Catalog from './pages/Catalog';
 import NoPage from './pages/NoPage';
 
-import useToken from './components/useToken';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  const {token, setToken} = useToken();
-  const [isLoggedIn, setLogin] = useState(!!token)
-
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="courses" element={isLoggedIn ? <Catalog /> : <Home />} />
-          <Route path="schedule" element={isLoggedIn ? <Schedule /> : <Home />} />
-          <Route path="calendar" element={isLoggedIn ? <Calendar /> : <Home />} />
+          <Route path="courses" element={<Catalog />} />
+          <Route path="schedule" element={<Schedule />} />
+          <Route path="calendar" element={<Calendar />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
