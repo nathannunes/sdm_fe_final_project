@@ -49,6 +49,7 @@ function Catalog() {
                             id={item.concentration}
                             concentration={item.concentration}
                             subjects={item.subject}
+                            key={item.concentration}
                         />
                     } )
                 }
