@@ -13,22 +13,26 @@ const dummy_data =
         level: "Graduate",
         courses: [ 
             { concentration: "Human Centered Computing (HCC)",
-              subject:  
-                [ { code: "CPSC 6110",
-                    name: "Virtual Reality Systems"
+              subjectsList:  
+                [ { code: "CPSC-6110",
+                    name: "Virtual Reality Systems",
+                    prerequisites: null
                   },
-                  { code: "CPSC 6120",
-                    name: "Eye Tracking Methodology and Applications"
+                  { code: "CPSC-6120",
+                    name: "Eye Tracking Methodology and Applications",
+                    prerequisites: null
                   }
                 ]
             },
             { concentration: "Software Engineering",
-              subject: 
-              [ { code: "CPSC 6160",
-                  name: "2-D Game Engine Construction"
+              subjectsList: 
+              [ { code: "CPSC-6160",
+                  name: "2-D Game Engine Construction",
+                  prerequisites: null
                 },
-                { code: "CPSC 6720",
-                  name: "Software Development Methodology"
+                { code: "CPSC-6720",
+                  name: "Software Development Methodology",
+                  prerequisites: null
                 }
               ]
             }
@@ -48,7 +52,7 @@ function Catalog() {
                         return <CatalogItem 
                             id={item.concentration}
                             concentration={item.concentration}
-                            subjects={item.subject}
+                            subjects={item.subjectsList}
                             key={item.concentration}
                         />
                     } )
