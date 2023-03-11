@@ -32,32 +32,40 @@ const Login = (props) => {
         if (isRegister) {
             // set url to register server
             console.log("contact registration service");
-            url = "https://locathost:8080/api/auth/register";                
+            url = "http://localhost:8080/soc/auth/register";                
         }
         else {
             // set url to login server
             console.log("contact login service");
-            url = "https://locathost:8080/api/auth/login";
-        
-        // fetch(url, {
-        //     headers: { 
-        //         "Content-Type": "application/json" 
-        //     },
-        //     method: "POST",
-        //     body: {
-        //         "username" : "testuser",
-        //         "password" : "1234"
-        //     }
-        //     }).then((response) => {
-        //         if (response.status === 200) {
-        //             if (isRegister) return response.json();
-        //             console.log(response.headers.get("authorization"));
-        //         }
-        //     }).then((data) => {
-        //         console.log(data.token);
-        //     });
+            url = "http://localhost:8080/soc/auth/login";
+        }
 
-            if(isRegister){
+        fetch(url, {
+            headers: { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": false
+            },
+            method: "POST",
+            body: {
+                "username" : email,
+                "password" : password
+            }
+            }).then((response) => {
+                if (response.status === 200) {
+                    if (isRegister) return response.json();
+                    console.log(response.headers.get("authorization"));
+                    setToken(response.token);
+                    setUser(response.user.username);
+                    setRole(response.user.role[0].authority);
+                    props.reloadPage(response.token);
+                }
+            }).then((data) => {
+                console.log(data.token);
+            }).catch(function (error){
+                console.log(error);
+            });
+
+            /*if(isRegister){
                 response = {
                     "status": 200,
                     "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjUiLCJpYXQiOjE2Nzc4NTEyNTcsImV4cCI6MTY3Nzg1MjY5N30.pJWgqDbTyk2EfVHmCUnpRNKIqmot1L2FXI4WrAL363I",
@@ -99,17 +107,7 @@ const Login = (props) => {
                         "credentialsNonExpired": true
                     }
                 };
-            }
-
-            if (response.status === 200){
-                setToken(response.token);
-                setUser(response.user.username);
-                setRole(response.user.role[0].authority);
-                props.reloadPage(response.token);
-            }
-        }
-
-
+            }*/
     }
 
     const emailHandler = (event) => {
