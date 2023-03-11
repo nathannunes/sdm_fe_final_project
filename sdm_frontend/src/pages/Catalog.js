@@ -77,7 +77,7 @@ function Catalog() {
                     <tr>
                         <td width="25%"><Dashboard /></td>
                         <td></td>
-                        <td width="25%">
+                        <td width="25%" style={{verticalAlign: "middle"}}>
                             <Button bsPrefix="btn-custom" onClick={showOverlay}>Add course</Button>
                             <Offcanvas show={show} onHide={closeOverlay}>
                                 <Offcanvas.Header closeButton>
