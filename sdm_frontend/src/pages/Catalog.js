@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
+import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
+import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import CatalogItem from '../components/CatalogItem';
+import EditCatalog from '../components/EditCatalog';
 import Dashboard from '../components/Dashboard';
+
+import '../components/Button.css';
 
 // TODO - add links to course content
 // search query to modify:
@@ -39,13 +45,52 @@ const dummy_data =
         ]
     };
 
-// TODO: Add editing capability (new, modify, remove)
+// TODO: Add editing capability (new, modify, remove) -- connect to backend
 
 function Catalog() {
+    const [show, setShow] = useState(false);
+
+    const showOverlay = (event) => {
+        event.preventDefault();
+        console.log("add course");
+        setShow(true);
+    }
+
+    const closeOverlay = () => {
+        console.log("close add window");
+        setShow(false);
+    }
+
+    const submitHandler = (newCourseInfo) => {
+        // this will eventually also update the database in the backend
+        // TODO - think about how best to link everything together
+        // TODO - need to do input validation: course number not being correct, concentration selected as "select from dropdown", etc.
+        console.log(newCourseInfo);
+        setShow(false);
+    }
+
     return(
         <div align="center">
             <h1 align="center" style={{color: "#e27f0b"}}>Course Catalog: School of Computing ({dummy_data.level})</h1> 
-            <Dashboard />
+            <Table size="sm">
+                <tbody>
+                    <tr>
+                        <td width="25%"><Dashboard /></td>
+                        <td></td>
+                        <td width="25%">
+                            <Button bsPrefix="btn-custom" onClick={showOverlay}>Add course</Button>
+                            <Offcanvas show={show} onHide={closeOverlay}>
+                                <Offcanvas.Header closeButton>
+                                    <Offcanvas.Title>Add Course</Offcanvas.Title>
+                                </Offcanvas.Header>
+                                <Offcanvas.Body>
+                                    <EditCatalog concentration={"Select from dropdown"} code={"CPSC-"} subject={""} submit={submitHandler} />
+                                </Offcanvas.Body>
+                            </Offcanvas>
+                        </td>
+                    </tr>
+                </tbody>
+            </Table>
             <Accordion>
                 {
                     dummy_data.courses.map( (item) => {

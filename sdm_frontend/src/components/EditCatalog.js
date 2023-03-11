@@ -63,7 +63,7 @@ const EditCatalog = (props) => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId={props.subject}>
-                <Form.Label>Course code</Form.Label>
+                <Form.Label>Course name</Form.Label>
                 <Form.Control placeholder={props.subject} onChange={nameChgHandler} />
                 <Form.Text>Enter course name</Form.Text>
             </Form.Group>
