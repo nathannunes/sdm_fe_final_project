@@ -7,12 +7,11 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import EditCatalog from './EditCatalog';
 import './Button.css';
 
-// TODO: Add button for editing
-
 const CatalogItem = (props) => {
     const [show, setShow] = useState(false);
 
-    const showOverlay = () => {
+    const showOverlay = (event) => {
+        event.preventDefault();
         console.log("modify course");
         setShow(true);
     }
@@ -22,8 +21,15 @@ const CatalogItem = (props) => {
         setShow(false);
     }
 
+    const submitHandler = (newCourseInfo) => {
+        // this will eventually also upddate the database in the backend
+        // TODO - think about how best to link everything together
+        console.log(newCourseInfo);
+        setShow(false);
+    }
+
     return (
-        <Accordion.Item eventKey={props.id}>
+        <Accordion.Item eventKey={props.concentration}>
             <Accordion.Header>
                 {props.concentration}
             </Accordion.Header>
@@ -44,7 +50,7 @@ const CatalogItem = (props) => {
                                             <Offcanvas.Body>
                                                 Note: leave placeholder text for items not changed
                                                 
-                                                <EditCatalog concentration={props.concentration} code={item.code} subject={item.name} />
+                                                <EditCatalog concentration={props.concentration} code={item.code} subject={item.name} submit={submitHandler} />
                                             </Offcanvas.Body>
                                         </Offcanvas>
                                     </td>

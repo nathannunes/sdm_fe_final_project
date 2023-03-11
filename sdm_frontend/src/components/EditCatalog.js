@@ -3,14 +3,12 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const EditCatalog = (props) => {
-    const [submit, setSubmit]=useState(props.show);  // is this the right approach?
     const [concentration, setConcentration] = useState(props.concentration);
     const [code, setCode] = useState(props.code);
     const [name, setName] = useState(props.subject);
 
     const concChgHandler = (event) => {
         event.preventDefault();
-        console.log(event);
         setConcentration(event.target.value);
     }
 
@@ -24,13 +22,9 @@ const EditCatalog = (props) => {
         setName(event.value);
     }
 
-    const submitHandler = () => {
-        console.log('button clicked');
-        setSubmit(true);
-        console.log(submit);
-        console.log(concentration);
-        console.log(code);
-        console.log(name);
+    const submitHandler = (event) => {
+        event.preventDefault();
+        props.submit({"concentration": concentration, "code": code, "subject": name});
     }
 
     //const concentrationList=JSON.parse("./concentrations.json");  TODO--make this work so the list can be available elsewhere
