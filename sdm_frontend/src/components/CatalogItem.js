@@ -42,7 +42,7 @@ const CatalogItem = (props) => {
                                     <td><strong>{item.code}</strong></td>
                                     <td>{item.name}</td>
                                     <td>
-                                        <Button bsPrefix="btn-custom" className="logout" onClick={showOverlay}>Modify</Button>
+                                        {props.isAAdm && <Button bsPrefix="btn-custom" className="logout" onClick={showOverlay}>Modify</Button>}
                                         <Offcanvas show={show} onHide={closeOverlay}>
                                             <Offcanvas.Header closeButton>
                                                 <Offcanvas.Title>Modify Course: {item.code}</Offcanvas.Title>

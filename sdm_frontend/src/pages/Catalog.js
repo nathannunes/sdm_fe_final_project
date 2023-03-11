@@ -7,6 +7,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import CatalogItem from '../components/CatalogItem';
 import EditCatalog from '../components/EditCatalog';
 import Dashboard from '../components/Dashboard';
+import SelectRole from '../components/SelectRole';
 
 import '../components/Button.css';
 
@@ -49,6 +50,7 @@ const dummy_data =
 
 function Catalog() {
     const [show, setShow] = useState(false);
+    const [isAAdm, setAAdm] = useState(true);
 
     const showOverlay = (event) => {
         event.preventDefault();
@@ -69,6 +71,16 @@ function Catalog() {
         setShow(false);
     }
 
+    const roleChangeHandler = (newRole) => {
+        console.log(newRole);
+        if (newRole === "Academic Administrator") {
+            setAAdm(true);
+        }
+        else {
+            setAAdm(false);
+        }
+    }
+
     return(
         <div align="center">
             <h1 align="center" style={{color: "#e27f0b"}}>Course Catalog: School of Computing ({dummy_data.level})</h1> 
@@ -76,9 +88,9 @@ function Catalog() {
                 <tbody>
                     <tr>
                         <td width="25%"><Dashboard /></td>
-                        <td></td>
+                        <td><SelectRole roleChange={roleChangeHandler}/></td>
                         <td width="25%" style={{verticalAlign: "middle"}}>
-                            <Button bsPrefix="btn-custom" onClick={showOverlay}>Add course</Button>
+                            {isAAdm && <Button bsPrefix="btn-custom" onClick={showOverlay}>Add course</Button>}
                             <Offcanvas show={show} onHide={closeOverlay}>
                                 <Offcanvas.Header closeButton>
                                     <Offcanvas.Title>Add Course</Offcanvas.Title>
@@ -95,10 +107,10 @@ function Catalog() {
                 {
                     dummy_data.courses.map( (item) => {
                         return <CatalogItem 
-                            id={item.concentration}
                             concentration={item.concentration}
                             subjects={item.subjectsList}
                             key={item.concentration}
+                            isAAdm={isAAdm}
                         />
                     } )
                 }
