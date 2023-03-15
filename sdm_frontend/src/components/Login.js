@@ -55,67 +55,33 @@ const Login = (props) => {
             }).then((response) => {
                 if (response.status === 200) {
                     if (isRegister) return response.json();
-                    console.log(response.headers.get("authorization"));
+
+                    const newToken = response.headers.get("authorization");
+                    console.log(newToken);
+                    const decodedJwt = jwt_decode(newToken);
+                    setToken(newToken)
+                    console.log(decodedJwt.sub);
+                    setUser(decodedJwt.sub)
+                    return(response.json());
                 }
             }).then((data) => {
-                const decodedJwt = jwt_decode(data.token);
-
-                console.log(decodedJwt);
-                console.log(data.token);
-                console.log(decodedJwt.sub);
-                console.log(data.user.role[0].authority);
-
-                setToken(data.token);
-                setUser(decodedJwt.sub);
-                setRole(data.user.role[0].authority);
-                props.reloadPage(data.token);
+                let role;
+                if (isRegister) {
+                    const decodedJwt = jwt_decode(data.token);
+                    setToken(data.token);
+                    setUser(decodedJwt.sub);
+                    role = data.user.role[0].authority
+                }
+                else {
+                    console.log(data);
+                    role = data.role[0].authority;
+                }
+                console.log(data);
+                setRole(role);
+                props.reloadPage(token);
             }).catch(function (error){
                 console.log(error);
             });
-
-            /*if(isRegister){
-                response = {
-                    "status": 200,
-                    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjUiLCJpYXQiOjE2Nzc4NTEyNTcsImV4cCI6MTY3Nzg1MjY5N30.pJWgqDbTyk2EfVHmCUnpRNKIqmot1L2FXI4WrAL363I",
-                    "user": {
-                        "id": 4,
-                        "username": email,
-                        "password": password,
-                        "enabled": true,
-                        "role": [
-                            {
-                                "id": 0,
-                                "authority": "USER",
-                                "user": null
-                            }
-                        ],
-                        "accountNonExpired": true,
-                        "accountNonLocked": true,
-                    }
-                };
-            }
-            else {
-                response = {
-                    "status": 200,
-                    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjUiLCJpYXQiOjE2Nzc4NTEyNTcsImV4cCI6MTY3Nzg1MjY5N30.pJWgqDbTyk2EfVHmCUnpRNKIqmot1L2FXI4WrAL363I",
-                    "user": {
-                        "id": 4,
-                        "username": email,
-                        "password": password,
-                        "enabled": true,
-                        "role": [
-                            {
-                                "id": 0,
-                                "authority": "USER",
-                                "user": null
-                            }
-                        ],
-                        "accountNonExpired": true,
-                        "accountNonLocked": true,
-                        "credentialsNonExpired": true
-                    }
-                };
-            }*/
     }
 
     const emailHandler = (event) => {
