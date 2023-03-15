@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import jwt_decode from 'jwt-decode';
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
@@ -32,35 +34,41 @@ const Login = (props) => {
         if (isRegister) {
             // set url to register server
             console.log("contact registration service");
-            url = "http://localhost:8080/soc/auth/register";                
+            url = "soc/auth/register";                
         }
         else {
             // set url to login server
             console.log("contact login service");
-            url = "http://localhost:8080/soc/auth/login";
+            url = "soc/auth/login";
         }
+
+        let bodyContent = { "username" : email,
+        "password" : password };
 
         fetch(url, {
             headers: { 
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": false
+                "Access-Control-Allow-Origin": true
             },
             method: "POST",
-            body: {
-                "username" : email,
-                "password" : password
-            }
+            body: JSON.stringify(bodyContent)
             }).then((response) => {
                 if (response.status === 200) {
                     if (isRegister) return response.json();
                     console.log(response.headers.get("authorization"));
-                    setToken(response.token);
-                    setUser(response.user.username);
-                    setRole(response.user.role[0].authority);
-                    props.reloadPage(response.token);
                 }
             }).then((data) => {
+                const decodedJwt = jwt_decode(data.token);
+
+                console.log(decodedJwt);
                 console.log(data.token);
+                console.log(decodedJwt.sub);
+                console.log(data.user.role[0].authority);
+
+                setToken(data.token);
+                setUser(decodedJwt.sub);
+                setRole(data.user.role[0].authority);
+                props.reloadPage(data.token);
             }).catch(function (error){
                 console.log(error);
             });
@@ -111,18 +119,15 @@ const Login = (props) => {
     }
 
     const emailHandler = (event) => {
-        event.preventDefault();
         setEmail(event.target.value);
     }
 
     const passwordHandler = (event) => {
-        event.preventDefault();
         setPassword(event.target.value);
     }
 
     const registerHandler = (event) => {
-        event.preventDefault();
-        setIsRegister(event.target.value);
+        setIsRegister(prevState => !prevState);
     }
 
     return (
@@ -143,7 +148,7 @@ const Login = (props) => {
                         <Form.Control type="password" placeholder="Password" onChange={passwordHandler}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                        <Form.Check type="checkbox" label="New user, register me" onChange={registerHandler} />
+                        <Form.Check type="checkbox" label="New user, register me" onClick={registerHandler} />
                     </Form.Group>
                     <Button bsPrefix="btn-custom" type="submit" onClick={submitHandler}>
                         Submit
