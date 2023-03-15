@@ -11,8 +11,9 @@ function Catalog() {
     const [isLoggedIn, setLogin] = useState(!!token);
     const {user, role} = useCredentials();
 
-    const reload = (newToken) => {
-      setLogin(!!newToken);
+    const reload = () => {
+        const newToken = JSON.parse(sessionStorage.getItem('token'));
+        setLogin(!!newToken);
     }
 
     if (!isLoggedIn) {
