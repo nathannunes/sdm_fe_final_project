@@ -7,7 +7,7 @@ import CredBadge from '../components/CredBadge';
 import useCredentials from '../components/useCredentials';
 
 function Catalog() {
-    const {token, setToken} = useToken();
+    const {token} = useToken();
     const [isLoggedIn, setLogin] = useState(!!token);
     const {user, role} = useCredentials();
 

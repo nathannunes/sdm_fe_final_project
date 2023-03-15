@@ -8,7 +8,8 @@ function Home() {
     const {token} = useToken();
     const [isLoggedIn, setLogin] = useState(token)
  
-    const reload = (newToken) => {
+    const reload = () => {
+        const newToken = JSON.parse(sessionStorage.getItem('token'));
         setLogin(!!newToken);
     }
 

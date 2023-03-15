@@ -17,11 +17,10 @@ const Login = (props) => {
     const [password, setPassword] = useState('');
     const [isRegister, setIsRegister] = useState(false);
 
-    const {token, setToken} = useToken();
-    const {user, role, setUser, setRole} = useCredentials();
+    const {setToken} = useToken();
+    const {setUser, setRole} = useCredentials();
     
     let url="";
-    let response=null;
 
     const submitHandler = (event) => {
         event.preventDefault();
@@ -60,7 +59,6 @@ const Login = (props) => {
                     console.log(newToken);
                     const decodedJwt = jwt_decode(newToken);
                     setToken(newToken)
-                    console.log(decodedJwt.sub);
                     setUser(decodedJwt.sub)
                     return(response.json());
                 }
@@ -73,12 +71,11 @@ const Login = (props) => {
                     role = data.user.role[0].authority
                 }
                 else {
-                    console.log(data);
                     role = data.role[0].authority;
                 }
-                console.log(data);
+
                 setRole(role);
-                props.reloadPage(token);
+                props.reloadPage();
             }).catch(function (error){
                 console.log(error);
             });
