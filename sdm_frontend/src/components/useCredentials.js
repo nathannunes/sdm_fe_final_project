@@ -3,14 +3,25 @@ import { useState } from 'react';
 function useCredentials() {
     const getUser = () => {
         const userString = sessionStorage.getItem('userName');
+
+        if (userString == null) {
+            return null;
+        }
+
         const userName = JSON.parse(userString);
         return userName;
+
     }
 
     const getRole = () => {
         const roleString = sessionStorage.getItem('userRole');
+
+        if (roleString == null) {
+            return null;
+        }
+
         const role = JSON.parse(roleString);
-        return role;
+        return role;    
     }
 
     const [user, setUser] = useState(getUser());

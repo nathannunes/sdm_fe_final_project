@@ -78,6 +78,7 @@ const Login = (props) => {
                 props.reloadPage();
             }).catch(function (error){
                 console.log(error);
+                // TODO - properly notify user of error
             });
     }
 
@@ -99,18 +100,18 @@ const Login = (props) => {
             <Card.Header as="h5" style={{backgroundColor: "#411988", color: "white", width: '100%'}}>Login</Card.Header>
             <Card.Body>
                 <Form>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3" controlId="userEmail">
                         <Form.Label>Email address (@clemson.edu)</Form.Label>
                         <Form.Control type="email" placeholder="Enter email" onChange={emailHandler}/>
                         <Form.Text className="text-muted">
                         </Form.Text>
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Group className="mb-3" controlId="userPassword">
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="Password" onChange={passwordHandler}/>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <Form.Group className="mb-3" controlId="registerCheckbox">
                         <Form.Check type="checkbox" label="New user, register me" onClick={registerHandler} />
                     </Form.Group>
                     <Button bsPrefix="btn-custom" type="submit" onClick={submitHandler}>
