@@ -6,7 +6,7 @@ import Login from '../components/Login';
 
 // render the component for testing
 // this will check that components are rendered as expected
-describe('Login', () => {
+describe('Login render', () => {
     it('renders Login component', () => {
         render(<Login />);
 
@@ -22,10 +22,33 @@ describe('Login', () => {
         expect(screen.getByRole("checkbox")).toBeInTheDocument();
         expect(screen.getByRole("button")).toBeInTheDocument();
     })
+});
+
+// this will test that functionality of the Login page makes changes as expected
+// lower-level functionality (session storage) is tested separately for respective components
+describe('Login function', () => {
+    let log;
+    let reloadMock;
+    let consoleOutput;
+    let mockedLog;
+
+    beforeEach(() => {
+        fetch.resetMocks();
+
+        consoleOutput = [];
+        log = console.log;
+        mockedLog = output => consoleOutput.push(output);
+        console.log = mockedLog;
+
+        reloadMock = jest.fn().mockName("reload mock");
+    });
+
+    afterEach(() => {
+        console.log = log;
+        jest.restoreAllMocks();
+    });
 
     it('checks API call response: register', () => {
-        fetch.resetMocks(); // TODO - move to before each?
-
         const mockRegisterResponse = {
             "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjUiLCJpYXQiOjE2Nzc4NTEyNTcsImV4cCI6MTY3Nzg1MjY5N30.pJWgqDbTyk2EfVHmCUnpRNKIqmot1L2FXI4WrAL363I",
             "user": {
@@ -46,16 +69,9 @@ describe('Login', () => {
             }
         };
 
-        const reloadMock = jest.fn().mockName("reload mock");
         render(<Login reloadPage={reloadMock}/>);
 
         fetch.mockResponseOnce(JSON.stringify(mockRegisterResponse));
-
-        // TODO - move to before each?
-        let consoleOutput = [];
-        const log = console.log;
-        const mockedLog = output => consoleOutput.push(output);
-        console.log = mockedLog;
 
         act( () => {
             userEvent.type(screen.getByRole('textbox'), 'testuser');
@@ -69,9 +85,5 @@ describe('Login', () => {
 
         expect(consoleOutput).toContain('In submit handler');
         expect(consoleOutput).toContain('contact registration service');
-
-        // TODO - move to after each?
-        console.log = log;
-        jest.restoreAllMocks();
     })
 })
