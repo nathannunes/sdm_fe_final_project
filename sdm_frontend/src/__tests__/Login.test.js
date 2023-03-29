@@ -49,6 +49,8 @@ describe('Login', () => {
         const reloadMock = jest.fn().mockName("reload mock");
         render(<Login reloadPage={reloadMock}/>);
 
+        fetch.mockResponseOnce(JSON.stringify(mockRegisterResponse));
+
         // TODO - move to before each?
         let consoleOutput = [];
         const log = console.log;
