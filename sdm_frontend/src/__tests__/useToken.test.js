@@ -1,7 +1,5 @@
 import React from 'react';
 import { describe, expect } from '@jest/globals';
-import { render, screen, act, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import useToken from '../components/useToken';
 
 // render the component for testing
