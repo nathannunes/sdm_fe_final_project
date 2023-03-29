@@ -2,16 +2,13 @@ import React from 'react';
 import { describe, expect } from '@jest/globals';
 import useToken from '../components/useToken';
 
-// render the component for testing
-// this will check that components are rendered as expected
+// this will check that useToken updates the sessionStorage as expected
 describe('useToken', () => {
     it('checks setToken', () => {
         const useStateMock = jest.spyOn(React, 'useState');
 
         const setState = jest.fn();
         useStateMock.mockImplementation(init => [init, setState]);
-
-        global.localStorage.setItem("token","");
 
         const {setToken} = useToken();
         
