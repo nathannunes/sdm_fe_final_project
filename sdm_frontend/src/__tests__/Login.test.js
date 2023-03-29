@@ -71,7 +71,7 @@ describe('Login function', () => {
 
         render(<Login reloadPage={reloadMock}/>);
 
-        fetch.mockResponseOnce(JSON.stringify(mockRegisterResponse));
+        fetch.mockResponseOnce(JSON.stringify(mockRegisterResponse));  // TODO - improve the mock here?
 
         act( () => {
             userEvent.type(screen.getByRole('textbox'), 'testuser');
@@ -85,5 +85,44 @@ describe('Login function', () => {
 
         expect(consoleOutput).toContain('In submit handler');
         expect(consoleOutput).toContain('contact registration service');
+    })
+
+    it('checks API call response: login', () => {
+        const mockLoginResponse = {
+            "headers": {
+                "authorization": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE2ODAwNTIyNjUsImV4cCI6MTY4MDA1MzcwNX0.XFsvV9G5r6XxoA2npSvkyO5flS97Hu97D5hIyevww-w"
+            },
+            "body": {
+                "id": 1,
+                "username": "testuser1",
+                "password": "$2a$10$wsBsq32kWMMVy25Qq.6AM.H8kRKCuzPGfSK/ka.nCA5IYwp7jWI9u",
+                "enabled": true,
+                "role": [
+                    {
+                        "id": 1,
+                        "authority": "USER"
+                    }
+                ],
+                "accountNonExpired": true,
+                "credentialsNonExpired": true,
+                "accountNonLocked": true
+            }
+        };
+
+        render(<Login reloadPage={reloadMock}/>);
+
+        fetch.mockResponseOnce(JSON.stringify(mockLoginResponse));
+
+        act( () => {
+            userEvent.type(screen.getByRole('textbox'), 'testuser');
+            userEvent.click(screen.getByRole('button'));
+        });
+
+        waitFor( () => {
+            screen.getByRole('header');
+        });
+
+        expect(consoleOutput).toContain('In submit handler');
+        expect(consoleOutput).toContain('contact login service');
     })
 })
