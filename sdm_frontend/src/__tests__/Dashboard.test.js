@@ -5,8 +5,8 @@ import Dashboard from '../components/Dashboard';
 
 // render the component for testing
 // this will check that components are rendered as expected
-describe('CredBadge render', () => {
-    it('renders Credential badge component', () => {
+describe('Dashboard render', () => {
+    it('renders Dashboard page', () => {
         const credentials = {
             "user": "testuser",
             "role": "USER"
