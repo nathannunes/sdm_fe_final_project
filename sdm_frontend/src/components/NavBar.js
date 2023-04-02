@@ -33,6 +33,7 @@ function NavBar(props) {
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/courses">Course Catalog</Nav.Link>
+                        <Nav.Link href="/selectAdvisees">Select Advisees</Nav.Link>
                         <Nav.Link href="/schedule">Course Schedule</Nav.Link>
                         <Nav.Link href="/calendar">Academic Calendar</Nav.Link>
                         <Nav><Button bsPrefix="btn-custom" className="logout" onClick={logoutHandler}>Logout</Button></Nav>

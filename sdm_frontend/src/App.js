@@ -9,6 +9,7 @@ import Catalog from './pages/Catalog';
 import NoPage from './pages/NoPage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SelectAdvisees from "./pages/SelectAdvisees/SelectAdvisees";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="selectAdvisees" element={<SelectAdvisees/>} />
           <Route path="courses" element={<Catalog />} />
           <Route path="schedule" element={<Schedule />} />
           <Route path="calendar" element={<Calendar />} />
