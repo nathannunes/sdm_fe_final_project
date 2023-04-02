@@ -1,0 +1,7 @@
+/* Modify the background color */
+.navbar-custom {
+    background-color: #411988;
+    bg: #411988;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
