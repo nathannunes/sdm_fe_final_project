@@ -104,13 +104,15 @@ function Catalog() {
       );
     }
 
+    // TODO - remove "select role" drop-down once users are available for testing each role
+    //        this will still be used for "system administrator" role, once implemented
     return(
         <div align="center">
             <h1 align="center" style={{color: "#e27f0b"}}>Course Catalog: School of Computing ({dummy_data.level})</h1> 
             <Table size="sm">
                 <tbody>
                     <tr>
-                        <td width="25%"><Dashboard /></td>
+                        <td width="55%"><Dashboard /></td>
                         <td><SelectRole roleChange={roleChangeHandler}/></td>
                         <td width="25%" style={{verticalAlign: "middle"}}>
                             {isAAdm && <Button bsPrefix="btn-custom" onClick={showOverlay}>Add course</Button>}
