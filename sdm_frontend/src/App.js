@@ -11,19 +11,19 @@ import NoPage from './pages/NoPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<Home />} />
-                    <Route path="courses" element={<Catalog />} />
-                    <Route path="schedule" element={<Schedule />} />
-                    <Route path="calendar" element={<Calendar />} />
-                    <Route path="*" element={<NoPage />} />
-                </Route>
-            </Routes>
-          </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="courses" element={<Catalog />} />
+          <Route path="schedule" element={<Schedule />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

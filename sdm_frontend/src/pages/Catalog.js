@@ -8,6 +8,11 @@ import CatalogItem from '../components/CatalogItem';
 import EditCatalog from '../components/EditCatalog';
 import Dashboard from '../components/Dashboard';
 import SelectRole from '../components/SelectRole';
+import Login from '../components/Login';
+import useToken from '../components/useToken';
+
+import CredBadge from '../components/CredBadge';
+import useCredentials from '../components/useCredentials';
 
 import '../components/Button.css';
 
@@ -49,6 +54,14 @@ const dummy_data =
 // TODO: Add editing capability (new, modify, remove) -- connect to backend
 
 function Catalog() {
+    const {token} = useToken();
+    const [isLoggedIn, setLogin] = useState(!!token);
+    const {user, role} = useCredentials();
+
+    const reload = () => {
+        const newToken = JSON.parse(sessionStorage.getItem('token'));
+        setLogin(!!newToken);
+        
     const [show, setShow] = useState(false);
     const [isAAdm, setAAdm] = useState(true);
 
@@ -79,6 +92,15 @@ function Catalog() {
         else {
             setAAdm(false);
         }
+    }
+    
+    if (!isLoggedIn) {
+      return(
+          <div style={{backgroundColor: 'whitesmoke'}}>
+             <h1 align="center" style={{color: "#e27f0b"}}>Please login to access this page</h1>
+             <Login reloadPage={reload} />
+          </div>
+      );
     }
 
     return(

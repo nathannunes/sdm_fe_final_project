@@ -1,9 +1,14 @@
 import React from 'react';
 
+import CredBadge from './CredBadge';
+import useCredentials from './useCredentials';
+
 function Dashboard() {
+    const {user, role} = useCredentials();
+
     return(
         <div style={{backgroundColor: 'whitesmoke'}}>
-            <h3 align="center" style={{color: "#e27f0b"}}>Placeholder: user credentials</h3>
+            <CredBadge userName={user} userRole={role} />
         </div>
     );
 }
