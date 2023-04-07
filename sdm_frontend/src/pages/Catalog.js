@@ -61,6 +61,7 @@ function Catalog() {
     const reload = () => {
         const newToken = JSON.parse(sessionStorage.getItem('token'));
         setLogin(!!newToken);
+    }
         
     const [show, setShow] = useState(false);
     const [isAAdm, setAAdm] = useState(true);
