@@ -47,7 +47,7 @@ const EditCatalog = (props) => {
                     <option>{props.concentration}</option>
                     {concentrationList.concentrations.map( (item) => {
                         if (item !== props.concentration) {
-                            return (<option value={item}>{item}</option>);
+                            return (<option value={item} key={Math.random()}>{item}</option>);
                         }
                         return null;
                     }
