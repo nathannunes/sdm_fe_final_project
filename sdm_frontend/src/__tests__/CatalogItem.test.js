@@ -55,7 +55,7 @@ describe('CatalogItem', () => {
         console.log = log;
     });
 
-    it('checks item render as student, advisor', () => {
+    it('renders CatalogItem component: student, academic advisor', () => {
         render(<CatalogItem
                     concentration={mock_item.concentration}
                     subjects={mock_item.subjectsList}
@@ -78,7 +78,7 @@ describe('CatalogItem', () => {
         expect(screen.getByRole("table")).toBeInTheDocument();
     });
 
-    it('checks item render as administrator', () => {
+    it('renders CatalogItem component: academic administrator', () => {
         render(<CatalogItem
             concentration={mock_item.concentration}
             subjects={mock_item.subjectsList}
@@ -105,7 +105,7 @@ describe('CatalogItem', () => {
         expect(screen.getByRole("table")).toBeInTheDocument();
     });
 
-    it('checks course modify overay', () => {
+    it('checks course modify overlay', () => {
         const { rerender } = render(<CatalogItem
                                         concentration={mock_item.concentration}
                                         subjects={mock_item.subjectsList}
