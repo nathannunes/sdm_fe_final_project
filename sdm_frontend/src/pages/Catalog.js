@@ -154,14 +154,15 @@ function Catalog() {
             </Table>
             <Accordion>
                 {
-                    // courseData.courses.map( (item) => {
-                    //     return <CatalogItem 
-                    //         concentration={item.concentration}
-                    //         subjects={item.subjectsList}
-                    //         key={item.concentration}
-                    //         isAAdm={isAAdm}
-                    //     />
-                    // } )
+                    // TODO - replace with courseData once API bug (AB101) is fixed
+                    dummy_data.courses.map( (item) => {
+                        return <CatalogItem 
+                            concentration={item.concentration}
+                            subjects={item.subjectsList}
+                            key={item.concentration}
+                            isAAdm={isAAdm}
+                        />
+                    } )
                 }
             </Accordion>
         </div>
