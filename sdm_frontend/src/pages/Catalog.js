@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
@@ -10,9 +10,6 @@ import Dashboard from '../components/Dashboard';
 import SelectRole from '../components/SelectRole';
 import Login from '../components/Login';
 import useToken from '../components/useToken';
-
-import CredBadge from '../components/CredBadge';
-import useCredentials from '../components/useCredentials';
 
 import '../components/Button.css';
 
@@ -56,15 +53,14 @@ const dummy_data =
 function Catalog() {
     const {token} = useToken();
     const [isLoggedIn, setLogin] = useState(!!token);
-    const {user, role} = useCredentials();
+    const [show, setShow] = useState(false);
+    const [isAAdm, setAAdm] = useState(true);
+    const [courseData, setCourseData] = useState(null);
 
     const reload = () => {
         const newToken = JSON.parse(sessionStorage.getItem('token'));
         setLogin(!!newToken);
     }
-        
-    const [show, setShow] = useState(false);
-    const [isAAdm, setAAdm] = useState(true);
 
     const showOverlay = (event) => {
         event.preventDefault();
@@ -85,6 +81,7 @@ function Catalog() {
         setShow(false);
     }
 
+    // this will eventually be removed/moved to system administration-related component
     const roleChangeHandler = (newRole) => {
         console.log(newRole);
         if (newRole === "Academic Administrator") {
@@ -94,6 +91,32 @@ function Catalog() {
             setAAdm(false);
         }
     }
+
+    // this will only get data from the API when the listed variables are changed
+    useEffect( () => {
+        console.log('loaded');
+        console.log(isLoggedIn);
+        if(isLoggedIn) {
+            console.log('logged in, fetching data');
+            const url = "soc/courses/findAll";
+            fetch(url, { 
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }).then((response) => {
+                if (response.status === 200) {
+                    return(response.json());
+                }
+            }).then((data) => {
+                console.log('setting data');
+                console.log(data);
+                setCourseData(data);
+            }).catch(function (error){
+                console.log(error);
+                // TODO - properly notify user of error
+            });
+        }
+    }, [isLoggedIn, token]);
     
     if (!isLoggedIn) {
       return(
@@ -103,6 +126,7 @@ function Catalog() {
           </div>
       );
     }
+    //console.log(courseData);
 
     // TODO - remove "select role" drop-down once users are available for testing each role
     //        this will still be used for "system administrator" role, once implemented
@@ -130,14 +154,14 @@ function Catalog() {
             </Table>
             <Accordion>
                 {
-                    dummy_data.courses.map( (item) => {
-                        return <CatalogItem 
-                            concentration={item.concentration}
-                            subjects={item.subjectsList}
-                            key={item.concentration}
-                            isAAdm={isAAdm}
-                        />
-                    } )
+                    // courseData.courses.map( (item) => {
+                    //     return <CatalogItem 
+                    //         concentration={item.concentration}
+                    //         subjects={item.subjectsList}
+                    //         key={item.concentration}
+                    //         isAAdm={isAAdm}
+                    //     />
+                    // } )
                 }
             </Accordion>
         </div>
