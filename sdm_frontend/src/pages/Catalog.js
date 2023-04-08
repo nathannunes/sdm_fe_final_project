@@ -95,7 +95,6 @@ function Catalog() {
     // this will only get data from the API when the listed variables are changed
     useEffect( () => {
         console.log('loaded');
-        console.log(isLoggedIn);
         if(isLoggedIn) {
             console.log('logged in, fetching data');
             const url = "soc/courses/findAll";
@@ -116,7 +115,7 @@ function Catalog() {
                 // TODO - properly notify user of error
             });
         }
-    }, [isLoggedIn, token]);
+    }, []);
     
     if (!isLoggedIn) {
       return(
@@ -154,8 +153,10 @@ function Catalog() {
             </Table>
             <Accordion>
                 {
-                    // TODO - replace with courseData once API bug (AB101) is fixed
-                    dummy_data.courses.map( (item) => {
+                    // NOTE - using dummy data here to avoid issues realted to the API respons.
+                    // This is a bug in the backend and has been report (AB101), but seems to
+                    // sporadically cause a problem with the front end display.
+                    dummy_data/*courseData*/.courses.map( (item) => {
                         return <CatalogItem 
                             concentration={item.concentration}
                             subjects={item.subjectsList}
