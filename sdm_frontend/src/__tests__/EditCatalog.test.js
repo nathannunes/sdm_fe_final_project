@@ -54,11 +54,6 @@ describe('EditCatalog', () => {
         const mockedLog = output => consoleOutput.push(output);
         console.log = mockedLog;
 
-        // since EditCatalog uses state changes, need to mock the functionality
-        const stateSetter = jest.fn();
-        const spy = jest.spyOn(React, 'useState')
-                        .mockImplementation((stateValue) => [stateValue='', stateSetter])
-
         render(<EditCatalog 
             concentration={mock_item.concentration}
             code={mock_item.subjectsList[0].code} subject={mock_item.subjectsList[0].name}
@@ -78,22 +73,18 @@ describe('EditCatalog', () => {
             screen.getByRole("button");
         });
 
-        // since the states aren't changed, the newCourseInfo input to the
-        // submit handler is wrong, so need to test a bit differently
-
         // check that the textboxes have the correct values
         expect(screen.getByRole("textbox", { name: "Course code" })).toHaveValue(new_item.code);
         expect(screen.getByRole("textbox", { name: "Course name" })).toHaveValue(new_item.name);
 
-        // check that the stateSetter has been called for the combobox selection, plus every
-        // character entered in the textboxes (lengths of the input strings)
-        expect(stateSetter).toHaveBeenCalledTimes(1 + new_item.code.length + new_item.name.length);
-
-        // check console log for indication that the submit handler (local) was called
+        // check console log for indication that the submit handler (local) was called and that
+        // the new course information is as it was entered
         expect(consoleOutput).toContain('in submit handler');
+        expect(consoleOutput[1].concentration).toBe(new_item.conc);
+        expect(consoleOutput[1].code).toBe(new_item.code);
+        expect(consoleOutput[1].subject).toBe(new_item.name);
 
         console.log = log;
-        jest.restoreAllMocks();
-        spy.mockClear();      
+        console.log(consoleOutput);
     });
 })
