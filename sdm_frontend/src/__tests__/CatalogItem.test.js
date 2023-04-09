@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, expect } from '@jest/globals';
-import { render, screen, act, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import CatalogItem from '../components/CatalogItem';
