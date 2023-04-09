@@ -107,6 +107,29 @@ function Catalog() {
                     return(response.json());
                 }
             }).then((data) => {
+                // this section is added to avoid warnings about repeated keys
+                // when creating the accordion display
+                // note this will only check for replicated course codes and only
+                // keep the first one encountered (a very basic implementation that
+                // does not try to make a decision as to which one to use)
+                console.log('removing repeated values in subject lists');
+                for(let i = 0; i < data.courses.length; i++) {  // loop through concentrations
+                    let course = data.courses[i];
+                    console.log(course)
+                    let seenSubjects = {};
+
+                    course.subjectsList = course.subjectsList.filter(
+                        (subj) => {
+                            if (subj.code in seenSubjects) {
+                                return false;
+                            } else {
+                                seenSubjects[subj.code] = true;
+                                return true;
+                            }
+                        }
+                    )
+                }
+
                 console.log('setting data');
                 console.log(data);
                 setCourseData(data);
@@ -156,7 +179,7 @@ function Catalog() {
                     // NOTE - using dummy data here to avoid issues realted to the API respons.
                     // This is a bug in the backend and has been report (AB101), but seems to
                     // sporadically cause a problem with the front end display.
-                    dummy_data/*courseData*/.courses.map( (item) => {
+                    courseData.courses.map( (item) => {
                         return <CatalogItem 
                             concentration={item.concentration}
                             subjects={item.subjectsList}
