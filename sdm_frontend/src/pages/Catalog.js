@@ -55,7 +55,7 @@ function Catalog() {
     const [isLoggedIn, setLogin] = useState(!!token);
     const [show, setShow] = useState(false);
     const [isAAdm, setAAdm] = useState(true);
-    const [courseData, setCourseData] = useState(null);
+    const [courseData, setCourseData] = useState(dummy_data);
 
     const reload = () => {
         const newToken = JSON.parse(sessionStorage.getItem('token'));
