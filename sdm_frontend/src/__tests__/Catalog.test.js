@@ -4,13 +4,49 @@ import { render, screen, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Catalog from '../pages/Catalog';
+import conc from '../components/concentrations.json';
 
 // render the component for testing
 // this will check that components are rendered as expected
-describe('Catalog render', () => {
+describe('Catalog', () => {
     let log;
     let consoleOutput;
     let mockedLog;
+
+    let spy;
+
+    // this is fragile because it depends on the dummy data defined in Catalog.js
+    // TODO - update this test after Catalog.js has been finalized/fully connected to API
+    const dummy_data = 
+    { 
+        level: "Graduate",
+        courses: [ 
+            { concentration: "Human Centered Computing (HCC)",
+            subjectsList:  
+                [ { code: "CPSC-6110",
+                    name: "Virtual Reality Systems",
+                    prerequisites: null
+                },
+                { code: "CPSC-6120",
+                    name: "Eye Tracking Methodology and Applications",
+                    prerequisites: null
+                }
+                ]
+            },
+            { concentration: "Software Engineering",
+            subjectsList: 
+            [ { code: "CPSC-6160",
+                name: "2-D Game Engine Construction",
+                prerequisites: null
+                },
+                { code: "CPSC-6720",
+                name: "Software Development Methodology",
+                prerequisites: null
+                }
+            ]
+            }
+        ]
+    };
 
     beforeEach( () => {
         // this is needed due to some internal dependencies in bootstrap that are needed
@@ -36,7 +72,8 @@ describe('Catalog render', () => {
         mockedLog = output => consoleOutput.push(output);
         console.log = mockedLog;
 
-        fetch.resetMocks();
+        spy = jest.spyOn(React, 'useEffect')
+                        .mockImplementation(() => {});
     });
 
     // clean up local storage after each test
@@ -67,42 +104,6 @@ describe('Catalog render', () => {
         sessionStorage.setItem("token", JSON.stringify("yes"));
         sessionStorage.setItem("user", JSON.stringify("testuser"));
         sessionStorage.setItem("role", JSON.stringify("USER"));
-
-        // this is fragile because it depends on the dummy data defined in Catalog.js
-        // TODO - update this test after Catalog.js has been finalized/fully connected to API
-        const dummy_data = 
-        { 
-            level: "Graduate",
-            courses: [ 
-                { concentration: "Human Centered Computing (HCC)",
-                subjectsList:  
-                    [ { code: "CPSC-6110",
-                        name: "Virtual Reality Systems",
-                        prerequisites: null
-                    },
-                    { code: "CPSC-6120",
-                        name: "Eye Tracking Methodology and Applications",
-                        prerequisites: null
-                    }
-                    ]
-                },
-                { concentration: "Software Engineering",
-                subjectsList: 
-                [ { code: "CPSC-6160",
-                    name: "2-D Game Engine Construction",
-                    prerequisites: null
-                    },
-                    { code: "CPSC-6720",
-                    name: "Software Development Methodology",
-                    prerequisites: null
-                    }
-                ]
-                }
-            ]
-        };
-
-        const spy = jest.spyOn(React, 'useEffect')
-                        .mockImplementation(() => {})
         
         render(<Catalog />)
 
@@ -126,110 +127,66 @@ describe('Catalog render', () => {
         // this test may be a bit redundant of CatalogItem tests
         expect(screen.getAllByRole("cell", { name: "Modify" }).length).toBe(totalCourses);
 
-        const addBtn = screen.getByRole("button", { name: "Add course" });
-        expect(addBtn).toBeInTheDocument();
-    })
+        // check for the "Add" button, which is only visible for academic administrators
+        expect(screen.getByRole("button", { name: "Add course" })).toBeInTheDocument();
+    });
+
+    // this is similar to the test for CatalogItem, as it uses the same overlay (EditCatalog)
+    // limited testing is done here (rendering only) since this component is tested in other suites
+    it('checks add course overlay', () => {
+        // TODO - update these when academic administrator role is added
+        // TODO - this test may also need to be updated for consistency
+        sessionStorage.setItem("token", JSON.stringify("yes"));
+        sessionStorage.setItem("user", JSON.stringify("testuser"));
+        sessionStorage.setItem("role", JSON.stringify("USER"));
+        
+        const { rerender} = render(<Catalog />)
+
+        const addBtn = screen.getByRole("button", { name: "Add course" });  // get the "Add Course" button element
+
+        // simulate clicking the button, which should show the overlay
+        act( () => {
+            userEvent.click(addBtn);
+        });
+
+        // allow the effects of the action to happen...
+        waitFor( () => {
+            screen.getAllByRole("button");
+        });
+
+        // re-render the page
+        rerender(<Catalog />);
+
+        // check that components of the overlay are present in the render
+        const sbmtBtn = screen.getByRole("button", { name: "Submit" });
+        const clsBtn = screen.getByRole("button", { name: "Close" });
+        expect(sbmtBtn).toBeInTheDocument();
+        expect(clsBtn).toBeInTheDocument();
+
+        const cmbBox = screen.getByRole("combobox", { name: "Concentration" }); 
+        expect(cmbBox).toBeInTheDocument();  // check for combobox
+
+        // check that concentration options are available
+        for (let i = 0; i < conc.length; i++) {
+            expect(screen.getByRole("option", { name: conc[i] })).toBeInTheDocument();
+        }
+
+        // check for textboxes to enter code and name
+        expect(screen.getByRole("textbox", { name: "Course code" })).toBeInTheDocument();
+        expect(screen.getByRole("textbox", { name: "" })).toBeInTheDocument();  // for some reason the Course name box is not named
+                                                                                // even though it is named in EditCatalog (and test)
+
+        // simulate clicking the close button
+        act( () => {
+            userEvent.click(clsBtn);
+        });
+
+        // allow the effects of the action to happen...
+        waitFor( () => {
+            screen.getByRole("header");
+        });
+
+        expect(consoleOutput).toContain('add course');
+        expect(consoleOutput).toContain('close add window');
+    });
 });
-
-// // this will test that functionality of the Login page makes changes as expected
-// // lower-level functionality (session storage) is tested separately for respective components
-// describe('Login function', () => {
-//     let log;
-//     let reloadMock;
-//     let consoleOutput;
-//     let mockedLog;
-
-//     beforeEach(() => {
-//         fetch.resetMocks();
-
-//         consoleOutput = [];
-//         log = console.log;
-//         mockedLog = output => consoleOutput.push(output);
-//         console.log = mockedLog;
-
-//         reloadMock = jest.fn().mockName("reload mock");
-//     });
-
-//     afterEach(() => {
-//         console.log = log;
-//         jest.restoreAllMocks();
-//     });
-
-//     it('checks API call response: register', () => {
-//         const mockRegisterResponse = {
-//             "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjUiLCJpYXQiOjE2Nzc4NTEyNTcsImV4cCI6MTY3Nzg1MjY5N30.pJWgqDbTyk2EfVHmCUnpRNKIqmot1L2FXI4WrAL363I",
-//             "user": {
-//                 "id": 4,
-//                 "username": "testuser",
-//                 "password": "$2a$10$ybLjCupo6sFdvGM.WOgXK.zySPjIVVUP9xcDfrAHBi3VnnOB4ZytS",
-//                 "enabled": true,
-//                 "role": [
-//                     {
-//                         "id": 0,
-//                         "authority": "USER",
-//                         "user": null
-//                     }
-//                 ],
-//                 "accountNonExpired": true,
-//                 "accountNonLocked": true,
-//                 "credentialsNonExpired": true
-//             }
-//         };
-
-//         render(<Login reloadPage={reloadMock}/>);
-
-//         fetch.mockResponseOnce(JSON.stringify(mockRegisterResponse));  // TODO - improve the mock here?
-
-//         act( () => {
-//             userEvent.type(screen.getByRole('textbox'), 'testuser');
-//             userEvent.click(screen.getByRole('checkbox'));
-//             userEvent.click(screen.getByRole('button'));
-//         });
-
-//         waitFor( () => {
-//             screen.getByRole('header');
-//         });
-
-//         expect(consoleOutput).toContain('In submit handler');
-//         expect(consoleOutput).toContain('contact registration service');
-//     })
-
-//     it('checks API call response: login', () => {
-//         const mockLoginResponse = {
-//             "headers": {
-//                 "authorization": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE2ODAwNTIyNjUsImV4cCI6MTY4MDA1MzcwNX0.XFsvV9G5r6XxoA2npSvkyO5flS97Hu97D5hIyevww-w"
-//             },
-//             "body": {
-//                 "id": 1,
-//                 "username": "testuser1",
-//                 "password": "$2a$10$wsBsq32kWMMVy25Qq.6AM.H8kRKCuzPGfSK/ka.nCA5IYwp7jWI9u",
-//                 "enabled": true,
-//                 "role": [
-//                     {
-//                         "id": 1,
-//                         "authority": "USER"
-//                     }
-//                 ],
-//                 "accountNonExpired": true,
-//                 "credentialsNonExpired": true,
-//                 "accountNonLocked": true
-//             }
-//         };
-
-//         render(<Login reloadPage={reloadMock}/>);
-
-//         fetch.mockResponseOnce(JSON.stringify(mockLoginResponse));
-
-//         act( () => {
-//             userEvent.type(screen.getByRole('textbox'), 'testuser');
-//             userEvent.click(screen.getByRole('button'));
-//         });
-
-//         waitFor( () => {
-//             screen.getByRole('header');
-//         });
-
-//         expect(consoleOutput).toContain('In submit handler');
-//         expect(consoleOutput).toContain('contact login service');
-//     })
-// })
