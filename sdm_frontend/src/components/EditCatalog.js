@@ -13,13 +13,11 @@ const EditCatalog = (props) => {
     }
 
     const codeChgHandler = (event) => {
-        event.preventDefault();
-        setCode(event.value);
+        setCode(event.target.value);
     }
 
     const nameChgHandler = (event) => {
-        event.preventDefault();
-        setName(event.value);
+        setName(event.target.value);
     }
 
     const submitHandler = (event) => {
