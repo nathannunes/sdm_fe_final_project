@@ -10,8 +10,6 @@ import EditSchedule from '../components/EditSchedule';
 import '../components/Button.css';
 import Login from '../components/Login';
 import useToken from '../components/useToken';
-
-import CredBadge from '../components/CredBadge';
 import useCredentials from '../components/useCredentials';
 
 function Schedule() {
@@ -22,6 +20,7 @@ function Schedule() {
     const reload = () => {
         const newToken = JSON.parse(sessionStorage.getItem('token'));
         setLogin(!!newToken);
+    }
         
     const [show, setShow] = useState(false);
     const [isAAdm, setAAdm] = useState(true);
@@ -66,11 +65,10 @@ function Schedule() {
     return( 
         <div style={{backgroundColor: 'whitesmoke'}}>
             <h1 align="center" style={{color: "#e27f0b"}}>Course Schedule</h1>
-            <CredBadge userName={user} userRole={role} />
             <Table size="sm">
                 <tbody>
                     <tr>
-                        <td width="25%"><Dashboard /></td>
+                        <td width="55%"><Dashboard /></td>
                         <td><SelectRole roleChange={roleChangeHandler}/></td>
                         <td width="25%" style={{verticalAlign: "middle"}}>
                             {isAAdm && <Button bsPrefix="btn-custom" onClick={showOverlay}>Add entry</Button>}
@@ -89,6 +87,7 @@ function Schedule() {
                 </tbody>
             </Table>
             Placeholder: Drop-down for year
+            
             Placeholder: course schedule table
         </div>
     );
