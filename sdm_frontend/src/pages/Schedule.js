@@ -8,8 +8,21 @@ import SelectRole from '../components/SelectRole';
 import EditSchedule from '../components/EditSchedule';
 
 import '../components/Button.css';
+import Login from '../components/Login';
+import useToken from '../components/useToken';
+
+import CredBadge from '../components/CredBadge';
+import useCredentials from '../components/useCredentials';
 
 function Schedule() {
+    const {token} = useToken();
+    const [isLoggedIn, setLogin] = useState(!!token);
+    const {user, role} = useCredentials();
+
+    const reload = () => {
+        const newToken = JSON.parse(sessionStorage.getItem('token'));
+        setLogin(!!newToken);
+        
     const [show, setShow] = useState(false);
     const [isAAdm, setAAdm] = useState(true);
 
@@ -41,9 +54,19 @@ function Schedule() {
         }
     }
     
+    if (!isLoggedIn) {
+        return(
+            <div style={{backgroundColor: 'whitesmoke'}}>
+               <h1 align="center" style={{color: "#e27f0b"}}>Please login to access this page</h1>
+               <Login reloadPage={reload} />
+            </div>
+        );
+    }
+
     return( 
         <div style={{backgroundColor: 'whitesmoke'}}>
             <h1 align="center" style={{color: "#e27f0b"}}>Course Schedule</h1>
+            <CredBadge userName={user} userRole={role} />
             <Table size="sm">
                 <tbody>
                     <tr>

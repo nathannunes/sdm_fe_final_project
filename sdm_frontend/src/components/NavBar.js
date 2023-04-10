@@ -1,4 +1,5 @@
 import React from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -8,9 +9,16 @@ import Button from 'react-bootstrap/Button';
 import './navbar.css';
 
 function NavBar(props) {
+    const navigate = useNavigate();
+
     const logoutHandler = (props) =>
     {
         console.log("logout");
+        sessionStorage.clear('token');
+        sessionStorage.clear('userName');
+        sessionStorage.clear('userRole');
+        navigate('/');
+        window.location.reload(false);
     }
 
     return (
