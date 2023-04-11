@@ -17,37 +17,30 @@ const EditSchedule = (props) => {
     const [years, setYears] = useState(props.Years);
 
     const concChgHandler = (event) => {
-        event.preventDefault();
         setConcentration(event.target.value);
     }
 
     const codeChgHandler = (event) => {
-        event.preventDefault();
         setCode(event.target.value);
     }
 
     const nameChgHandler = (event) => {
-        event.preventDefault();
         setName(event.target.value);
     }
 
     const springHandler = (event) => {
-        event.preventDefault();
         setInSpring(event.target.value);
     }
 
     const summerHandler = (event) => {
-        event.preventDefault();
         setInSummer(event.target.value);
     }
 
     const fallHandler = (event) => {
-        event.preventDefault();
         setInFall(event.target.value);
     }
 
     const yearHandler = (event) => {
-        event.preventDefault();
         setYears(event.target.value);
     }
 
@@ -89,7 +82,7 @@ const EditSchedule = (props) => {
                     <option>{props.concentration}</option>
                     {concentrationList.concentrations.map( (item) => {
                         if (item !== props.concentration) {
-                            return (<option value={item}>{item}</option>);
+                            return (<option value={item} key={Math.random()}>{item}</option>);
                         }
                         return null;
                     }
@@ -107,7 +100,7 @@ const EditSchedule = (props) => {
             <Table size="sm">
                 <thead>
                     <tr>
-                        <td colspan="3">Select which semesters the course is offered</td>
+                        <td colSpan="3">Select which semesters the course is offered</td>
                     </tr>
                 </thead>
                 
@@ -115,17 +108,17 @@ const EditSchedule = (props) => {
                     <tr>
                         <td width="30%">
                             <Form.Group className="mb-3" controlId="springCheckbox">
-                                <Form.Check type="checkbox" label="Spring" onChange={springHandler} />
+                                <Form.Check type="checkbox" label="Spring" checked={props.inSpring} onChange={springHandler} />
                             </Form.Group>
                         </td>
                         <td width="30%">
                         <Form.Group className="mb-3" controlId="summerCheckbox">
-                            <Form.Check type="checkbox" label="Summer" onChange={summerHandler} />
+                            <Form.Check type="checkbox" label="Summer" checked={props.inSummer} onChange={summerHandler} />
                         </Form.Group>
                         </td>
                         <td width="30%">
                         <Form.Group className="mb-3" controlId="fallCheckbox">
-                            <Form.Check type="checkbox" label="Fall" onChange={fallHandler} />
+                            <Form.Check type="checkbox" label="Fall" checked={props.inFall} onChange={fallHandler} />
                         </Form.Group>
                         </td>
                     </tr>
