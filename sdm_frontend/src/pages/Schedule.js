@@ -15,7 +15,6 @@ import useCredentials from '../components/useCredentials';
 function Schedule() {
     const {token} = useToken();
     const [isLoggedIn, setLogin] = useState(!!token);
-    const {user, role} = useCredentials();
 
     const reload = () => {
         const newToken = JSON.parse(sessionStorage.getItem('token'));
