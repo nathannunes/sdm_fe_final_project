@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
@@ -97,8 +97,54 @@ function Schedule() {
         }
     }
     
-    // TODO - here add useEffect( () => {} ) to call the API and set the
-    // course data based on what was received
+    // this will only get data from the API when the listed variables are changed
+    useEffect( () => {
+        console.log('loaded');
+        if(isLoggedIn) {
+            // TODO - use latest backend build and test with API
+            // console.log('logged in, fetching data');
+            // const url = "soc/courses/findAll";
+            // fetch(url, { 
+            //     headers: {
+            //         "Authorization": "Bearer " + token
+            //     }
+            // }).then((response) => {
+            //     if (response.status === 200) {
+            //         return(response.json());
+            //     }
+            // }).then((data) => {
+            //     // this section is added to avoid warnings about repeated keys
+            //     // when creating the accordion display
+            //     // note this will only check for replicated course codes and only
+            //     // keep the first one encountered (a very basic implementation that
+            //     // does not try to make a decision as to which one to use)
+            //     console.log('removing repeated values in subject lists');
+            //     for(let i = 0; i < data.courses.length; i++) {  // loop through concentrations
+            //         let course = data.courses[i];
+            //         console.log(course)
+            //         let seenSubjects = {};
+
+            //         course.subjectsList = course.subjectsList.filter(
+            //             (subj) => {
+            //                 if (subj.code in seenSubjects) {
+            //                     return false;
+            //                 } else {
+            //                     seenSubjects[subj.code] = true;
+            //                     return true;
+            //                 }
+            //             }
+            //         )
+            //     }
+
+            //     console.log('setting data');
+            //     console.log(data);
+            //     setCourseData(data);
+            // }).catch(function (error){
+            //     console.log(error);
+            //     // TODO - properly notify user of error
+            // });
+        }
+    }, []);
 
     if (!isLoggedIn) {
         return(
