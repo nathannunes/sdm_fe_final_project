@@ -28,16 +28,16 @@ const EditSchedule = (props) => {
         setName(event.target.value);
     }
 
-    const springHandler = (event) => {
-        setInSpring(event.target.value);
+    const springHandler = () => {
+        setInSpring(prevState => !prevState);
     }
 
-    const summerHandler = (event) => {
-        setInSummer(event.target.value);
+    const summerHandler = () => {
+        setInSummer(prevState => !prevState);
     }
 
-    const fallHandler = (event) => {
-        setInFall(event.target.value);
+    const fallHandler = () => {
+        setInFall(prevState => !prevState);
     }
 
     const yearHandler = (event) => {
@@ -108,17 +108,17 @@ const EditSchedule = (props) => {
                     <tr>
                         <td width="30%">
                             <Form.Group className="mb-3" controlId="springCheckbox">
-                                <Form.Check type="checkbox" label="Spring" checked={props.inSpring} onChange={springHandler} />
+                                <Form.Check type="checkbox" label="Spring" checked={inSpring} onChange={springHandler} />
                             </Form.Group>
                         </td>
                         <td width="30%">
                         <Form.Group className="mb-3" controlId="summerCheckbox">
-                            <Form.Check type="checkbox" label="Summer" checked={props.inSummer} onChange={summerHandler} />
+                            <Form.Check type="checkbox" label="Summer" checked={inSummer} onChange={summerHandler} />
                         </Form.Group>
                         </td>
                         <td width="30%">
                         <Form.Group className="mb-3" controlId="fallCheckbox">
-                            <Form.Check type="checkbox" label="Fall" checked={props.inFall} onChange={fallHandler} />
+                            <Form.Check type="checkbox" label="Fall" checked={inFall} onChange={fallHandler} />
                         </Form.Group>
                         </td>
                     </tr>
@@ -127,7 +127,7 @@ const EditSchedule = (props) => {
 
             <Form.Group className="mb-3" controlId="year">
                 <Form.Label>Year(s) offered</Form.Label>
-                <Form.Control placeholder={props.subject} onChange={yearHandler} />
+                <Form.Control placeholder={props.years} onChange={yearHandler} />
                 <Form.Text>Enter comma-separated list of years the course is offered</Form.Text>
             </Form.Group>
 
