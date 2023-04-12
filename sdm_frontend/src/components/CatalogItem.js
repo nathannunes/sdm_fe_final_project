@@ -1,6 +1,8 @@
 import React from 'react';
 import Accordion from 'react-bootstrap/Accordion';
-import Table from 'react-bootstrap/Table';
+// import Button from 'react-bootstrap/Button';
+
+import ScheduleItem from './ScheduleItem';
 
 import './Button.css';
 
@@ -12,18 +14,29 @@ const CatalogItem = (props) => {
                 {props.concentration}
             </Accordion.Header>
             <Accordion.Body>
-                <Table striped borderless>
-                    <tbody>
-                        {props.subjects.map((item) => {
-                            return(
-                                <tr key={item.code}>
-                                    <td><strong>{item.code}</strong></td>
-                                    <td>{item.name}</td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </Table>
+                {props.subjects.map((item) => {
+                    return(
+                        <Accordion>
+                            <Accordion.Item eventKey = {item.name}>
+                                    <Accordion.Header>
+                                        <b>{item.code}</b>{": " + item.name}
+                                        <span style={{display:"inline-block", width:"25%"}}></span>
+                                        {/*placeholder for button*/}
+                                    </Accordion.Header>
+                                    <Accordion.Body>
+                                        <Accordion>
+                                        <ScheduleItem course={item.code}
+                                                      name={item.name}
+                                                      concentration={props.concentration}
+                                                      years={item.offer_date}
+                                                      semesters={item.course_semester}
+                                                      isAAdm={props.isAAdm} />
+                                        </Accordion>
+                                    </Accordion.Body>
+                            </Accordion.Item>
+                        </Accordion>
+                    )
+                })}
             </Accordion.Body>
         </Accordion.Item>
     );
