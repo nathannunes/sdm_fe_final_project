@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
-// import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 
 import ScheduleItem from './ScheduleItem';
 
 import './Button.css';
 
 const CatalogItem = (props) => {
+    const [showDate, setShowDate] = useState(false);
+
+    const showDates = () => {
+        console.log("Toggle dates");
+        setShowDate(!showDate);
+    }
 
     return (
         <Accordion.Item eventKey={props.concentration}>
@@ -14,29 +21,35 @@ const CatalogItem = (props) => {
                 {props.concentration}
             </Accordion.Header>
             <Accordion.Body>
-                {props.subjects.map((item) => {
-                    return(
-                        <Accordion>
-                            <Accordion.Item eventKey = {item.name}>
-                                    <Accordion.Header>
-                                        <b>{item.code}</b>{": " + item.name}
-                                        <span style={{display:"inline-block", width:"25%"}}></span>
-                                        {/*placeholder for button*/}
-                                    </Accordion.Header>
-                                    <Accordion.Body>
-                                        <Accordion>
-                                        <ScheduleItem course={item.code}
-                                                      name={item.name}
-                                                      concentration={props.concentration}
-                                                      years={item.offer_date}
-                                                      semesters={item.course_semester}
-                                                      isAAdm={props.isAAdm} />
-                                        </Accordion>
-                                    </Accordion.Body>
-                            </Accordion.Item>
-                        </Accordion>
-                    )
-                })}
+                <Table striped borderless>
+                    <tbody>
+                        {props.subjects.map((item) => {
+                            return(
+                                <React.Fragment>
+                                <tr key={item.code}>
+                                    <td><b>{item.code}</b>{": " + item.name}</td>
+                                    <td>
+                                        {/* TODO - this affects *all* date rows; need to update to only affect
+                                        the rows with the associated course */}
+                                        <Button bsPrefix="btn-custom" onClick={showDates}>Show Dates</Button>
+                                    </td>
+                                    <td>
+                                        placeholder
+                                    </td>
+                                </tr>
+                                    <ScheduleItem course={item.code}
+                                        name={item.name}
+                                        concentration={props.concentration}
+                                        years={item.offer_date}
+                                        semesters={item.course_semester}
+                                        isAAdm={props.isAAdm}
+                                        showDate={showDate}
+                                    />
+                                </React.Fragment>
+                            )
+                        })}
+                    </tbody>
+                </Table>
             </Accordion.Body>
         </Accordion.Item>
     );

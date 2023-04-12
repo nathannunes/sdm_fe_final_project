@@ -14,7 +14,7 @@ const EditSchedule = (props) => {
     const [inSpring, setInSpring] = useState(props.inSpring);
     const [inSummer, setInSummer] = useState(props.inSummer);
     const [inFall, setInFall] = useState(props.inFall);
-    const [years, setYears] = useState(props.Years);
+    const [years, setYears] = useState(props.years);
 
     const concChgHandler = (event) => {
         setConcentration(event.target.value);
