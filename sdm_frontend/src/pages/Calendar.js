@@ -9,13 +9,16 @@ import Dashboard from '../components/Dashboard';
 import SelectRole from '../components/SelectRole';
 import useToken from '../components/useToken';
 
+import CalendarItem from '../components/CalendarItem';
+import '../components/Button.css';
+
 const dummy_data = {
     "Summer 2023": [
         {
             "id": 5,
             "semester": "Summer 2023",
-            "date": "Jan 9, Mon - Jan 10, Tue",
-            "event": "Late enrollment test1"
+            "date": "Sep 9, Mon - Sep 10, Tue",
+            "event": "Late enrollment"
         }
     ],
     "Spring 2023": [
@@ -23,7 +26,7 @@ const dummy_data = {
             "id": 1,
             "semester": "Spring 2023",
             "date": "Jan 9, Mon - Jan 10, Tue",
-            "event": "Late enrollment test1"
+            "event": "Late enrollment"
         },
         {
             "id": 2,
@@ -34,8 +37,8 @@ const dummy_data = {
         {
             "id": 3,
             "semester": "Spring 2023",
-            "date": "Jan 9, Mon - Jan 10, Tue",
-            "event": "Late enrollment test1"
+            "date": "Mar 20, Mon - Mar 24, Fri",
+            "event": "Spring break"
         }
     ]
 };
@@ -167,37 +170,7 @@ function Calendar() {
                     const data = calData[key];
 
                     return(
-                    // TODO - move to CalendarItem component
-                    <Accordion.Item eventKey ={key}>
-                        <Accordion.Header>
-                            <strong>{key}</strong>
-                        </Accordion.Header>
-                        <Accordion.Body>
-                            <Table striped borderless>
-                                {data.map( (item) => {
-                                    return(
-                                    <tr key={item.event}>
-                                        <td><strong>{item.date}</strong></td>
-                                        <td>{item.event}</td>
-                                        <td>
-                                        {isAAdm && <Button bsPrefix="btn-custom" className="logout" onClick={showOverlay}>Modify</Button>}
-                                        <Offcanvas show={show} onHide={closeOverlay}>
-                                            <Offcanvas.Header closeButton>
-                                                <Offcanvas.Title>Modify Item: {item.event}</Offcanvas.Title>
-                                            </Offcanvas.Header>
-                                            <Offcanvas.Body>
-                                                Note: leave placeholder text for items not changed
-                                                
-                                                placeholder for EditCalendar
-                                            </Offcanvas.Body>
-                                        </Offcanvas>
-                                        </td>
-                                    </tr>
-                                    )
-                                })}
-                            </Table>
-                        </Accordion.Body>
-                    </Accordion.Item>
+                        <CalendarItem semester={key} dates={data} isAAdm={isAAdm} />
                     )
                 })}
             </Accordion>
