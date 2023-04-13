@@ -141,7 +141,7 @@ function Calendar() {
 
     return( 
         <div align="center">
-            <h1 align="center" style={{color: "#e27f0b"}}>Course Catalog: School of Computing ({dummy_data.level})</h1> 
+            <h1 align="center" style={{color: "#e27f0b"}}>Academic Calendar</h1> 
             <Table size="sm">
                 <tbody>
                     <tr>
