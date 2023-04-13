@@ -4,6 +4,7 @@ import Table from 'react-bootstrap/Table';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Accordion from 'react-bootstrap/Accordion';
 
+import EditCalendar from './EditCalendar';
 import './Button.css';
 
 const CalendarItem = (props) => {
@@ -48,7 +49,7 @@ const CalendarItem = (props) => {
                                 <Offcanvas.Body>
                                     Note: leave placeholder text for items not changed
                                     
-                                    placeholder for EditCalendar
+                                    <EditCalendar item={item} submit={submitHandler} />
                                 </Offcanvas.Body>
                             </Offcanvas>
                             </td>

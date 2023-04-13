@@ -10,6 +10,7 @@ import SelectRole from '../components/SelectRole';
 import useToken from '../components/useToken';
 
 import CalendarItem from '../components/CalendarItem';
+import EditCalendar from '../components/EditCalendar';
 import '../components/Button.css';
 
 const dummy_data = {
@@ -158,7 +159,13 @@ function Calendar() {
                                     <Offcanvas.Title>Add Item</Offcanvas.Title>
                                 </Offcanvas.Header>
                                 <Offcanvas.Body>
-                                    placeholder for EditCalendar component
+                                <EditCalendar item={{
+                                        "id": Math.random(),
+                                        "semester": "Select from dropdown",
+                                        "date": "",
+                                        "event": ""
+                                    }} 
+                                    submit={submitHandler} />
                                 </Offcanvas.Body>
                             </Offcanvas>
                         </td>
