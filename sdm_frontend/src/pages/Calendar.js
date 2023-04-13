@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import Accordion from 'react-bootstrap/Accordion';
 
 import Login from '../components/Login';
 import Dashboard from '../components/Dashboard';
@@ -154,13 +155,52 @@ function Calendar() {
                                     <Offcanvas.Title>Add Item</Offcanvas.Title>
                                 </Offcanvas.Header>
                                 <Offcanvas.Body>
-                                    placeholder
+                                    placeholder for EditCalendar component
                                 </Offcanvas.Body>
                             </Offcanvas>
                         </td>
                     </tr>
                 </tbody>
             </Table>
+            <Accordion>
+                { Object.keys(calData).map((key) => {
+                    const data = calData[key];
+
+                    return(
+                    // TODO - move to CalendarItem component
+                    <Accordion.Item eventKey ={key}>
+                        <Accordion.Header>
+                            <strong>{key}</strong>
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <Table striped borderless>
+                                {data.map( (item) => {
+                                    return(
+                                    <tr key={item.event}>
+                                        <td><strong>{item.date}</strong></td>
+                                        <td>{item.event}</td>
+                                        <td>
+                                        {isAAdm && <Button bsPrefix="btn-custom" className="logout" onClick={showOverlay}>Modify</Button>}
+                                        <Offcanvas show={show} onHide={closeOverlay}>
+                                            <Offcanvas.Header closeButton>
+                                                <Offcanvas.Title>Modify Item: {item.event}</Offcanvas.Title>
+                                            </Offcanvas.Header>
+                                            <Offcanvas.Body>
+                                                Note: leave placeholder text for items not changed
+                                                
+                                                placeholder for EditCalendar
+                                            </Offcanvas.Body>
+                                        </Offcanvas>
+                                        </td>
+                                    </tr>
+                                    )
+                                })}
+                            </Table>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                    )
+                })}
+            </Accordion>
         </div>
     );
 }
