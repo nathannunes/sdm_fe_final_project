@@ -92,46 +92,23 @@ function Calendar() {
         if(isLoggedIn) {
             console.log('logged in, fetching data');
             setCalData(dummy_data);  // TODO - remove once fetch is added back
-            const url = "soc/courses/findAll";
-            // fetch(url, { 
-            //     headers: {
-            //         "Authorization": "Bearer " + token
-            //     }
-            // }).then((response) => {
-            //     if (response.status === 200) {
-            //         return(response.json());
-            //     }
-            // }).then((data) => {
-            //     // this section is added to avoid warnings about repeated keys
-            //     // when creating the accordion display
-            //     // note this will only check for replicated course codes and only
-            //     // keep the first one encountered (a very basic implementation that
-            //     // does not try to make a decision as to which one to use)
-            //     console.log('removing repeated values in subject lists');
-            //     for(let i = 0; i < data.courses.length; i++) {  // loop through concentrations
-            //         let course = data.courses[i];
-            //         console.log(course)
-            //         let seenSubjects = {};
-
-            //         course.subjectsList = course.subjectsList.filter(
-            //             (subj) => {
-            //                 if (subj.code in seenSubjects) {
-            //                     return false;
-            //                 } else {
-            //                     seenSubjects[subj.code] = true;
-            //                     return true;
-            //                 }
-            //             }
-            //         )
-            //     }
-
-            //     console.log('setting data');
-            //     console.log(data);
-            //     setCourseData(data);
-            // }).catch(function (error){
-            //     console.log(error);
-            //     // TODO - properly notify user of error
-            // });
+            const url = "soc/academic/getAcademicCalendar";
+            fetch(url, { 
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }).then((response) => {
+                if (response.status === 200) {
+                    return(response.json());
+                }
+            }).then((data) => {
+                console.log('setting data');
+                console.log(data);
+                setCalData(data);
+            }).catch(function (error){
+                console.log(error);
+                // TODO - properly notify user of error
+            });
         }
     }, []);
 
@@ -149,7 +126,7 @@ function Calendar() {
             <h1 align="center" style={{color: "#e27f0b"}}>Academic Calendar</h1> 
             <Table size="sm">
                 <tbody>
-                    <tr>
+                    <tr key="header">
                         <td width="55%"><Dashboard /></td>
                         <td><SelectRole roleChange={roleChangeHandler}/></td>
                         <td width="25%" style={{verticalAlign: "middle"}}>

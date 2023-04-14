@@ -35,27 +35,29 @@ const CalendarItem = (props) => {
             </Accordion.Header>
             <Accordion.Body>
                 <Table striped borderless>
-                    {props.dates.map( (item) => {
-                        return(
-                        <tr key={item.semester + " " + item.event}>
-                            <td><strong>{item.date}</strong></td>
-                            <td>{item.event}</td>
-                            <td>
-                            {props.isAAdm && <Button bsPrefix="btn-custom" className="logout" onClick={showOverlay}>Modify</Button>}
-                            <Offcanvas show={show} onHide={closeOverlay}>
-                                <Offcanvas.Header closeButton>
-                                    <Offcanvas.Title>Modify Item: {item.event}</Offcanvas.Title>
-                                </Offcanvas.Header>
-                                <Offcanvas.Body>
-                                    Note: leave placeholder text for items not changed
-                                    
-                                    <EditCalendar item={item} submit={submitHandler} />
-                                </Offcanvas.Body>
-                            </Offcanvas>
-                            </td>
-                        </tr>
-                        )
-                    })}
+                    <tbody>
+                        {props.dates.map( (item) => {
+                            return(
+                            <tr key={item.semester + " " + item.event}>
+                                <td><strong>{item.date}</strong></td>
+                                <td>{item.event}</td>
+                                <td>
+                                {props.isAAdm && <Button bsPrefix="btn-custom" className="logout" onClick={showOverlay}>Modify</Button>}
+                                <Offcanvas show={show} onHide={closeOverlay}>
+                                    <Offcanvas.Header closeButton>
+                                        <Offcanvas.Title>Modify Item: {item.event}</Offcanvas.Title>
+                                    </Offcanvas.Header>
+                                    <Offcanvas.Body>
+                                        Note: leave placeholder text for items not changed
+                                        
+                                        <EditCalendar item={item} submit={submitHandler} />
+                                    </Offcanvas.Body>
+                                </Offcanvas>
+                                </td>
+                            </tr>
+                            )
+                        })}
+                    </tbody>
                 </Table>
             </Accordion.Body>
         </Accordion.Item>
