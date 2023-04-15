@@ -76,6 +76,9 @@ const EditSchedule = (props) => {
                 <Form.Text>Enter course number as CODE-####</Form.Text>
             </Form.Group>
 
+            {/* TODO - there is a bug here with the display when a new item is selected
+            The right value is returned by the submit handler, but it doesn't display
+            correctly */}
             <Form.Group className="mb-3" controlId="concentration">
                 <Form.Label>Concentration</Form.Label>
                 <Form.Select onChange={concChgHandler}>
