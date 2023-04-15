@@ -50,6 +50,7 @@ function Calendar() {
     const [show, setShow] = useState(false);
     const [isAAdm, setAAdm] = useState(true);
     const [calData, setCalData] = useState(dummy_data);
+    const [updateToggle, setToggle] = useState(false);
 
     const reload = () => {
         const newToken = JSON.parse(sessionStorage.getItem('token'));
@@ -67,12 +68,38 @@ function Calendar() {
         setShow(false);
     }
 
-    const submitHandler = (newCourseInfo) => {
-        // this will eventually also update the database in the backend
-        // TODO - think about how best to link everything together
-        // TODO - need to do input validation: course number not being correct, concentration selected as "select from dropdown", etc.
-        console.log(newCourseInfo);
+    const submitHandler = (newCalInfo) => {
+        // TODO - need to do input validation
+        console.log(newCalInfo);
         setShow(false);
+
+        // call to update API
+        if(isLoggedIn) {
+            console.log('logged in, updating data');
+            const url = "soc/academic/saveAcademicCalendar";
+            fetch(url, { 
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": true
+                },
+                method: "POST",
+                body: JSON.stringify(newCalInfo)
+            }).then((response) => {
+                if (response.status === 200) {
+                    return(response.json());
+                }
+            }).then((data) => {
+                console.log('returned data');
+                if (data !== "undefined") {
+                    console.log(data);
+                    setToggle( (prev) => !prev );
+                }
+            }).catch(function (error){
+                console.log(error);
+                // TODO - properly notify user of error
+            });
+        }
     }
 
     // this will eventually be removed/moved to system administration-related component
@@ -91,7 +118,6 @@ function Calendar() {
         console.log('loaded');
         if(isLoggedIn) {
             console.log('logged in, fetching data');
-            setCalData(dummy_data);  // TODO - remove once fetch is added back
             const url = "soc/academic/getAcademicCalendar";
             fetch(url, { 
                 headers: {
@@ -110,7 +136,7 @@ function Calendar() {
                 // TODO - properly notify user of error
             });
         }
-    }, []);
+    }, [updateToggle]);
 
     if (!isLoggedIn) {
         return(
@@ -154,7 +180,7 @@ function Calendar() {
                     const data = calData[key];
 
                     return(
-                        <CalendarItem semester={key} dates={data} isAAdm={isAAdm} />
+                        <CalendarItem semester={key} dates={data} isAAdm={isAAdm} submit={submitHandler}/>
                     )
                 })}
             </Accordion>

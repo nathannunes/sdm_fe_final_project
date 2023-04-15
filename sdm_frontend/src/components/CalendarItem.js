@@ -21,10 +21,11 @@ const CalendarItem = (props) => {
         setShow(false);
     }
 
-    const submitHandler = (newCourseInfo) => {
+    const submitHandler = (newCalInfo) => {
         // this will eventually also upddate the database in the backend
         // TODO - think about how best to link everything together
-        console.log(newCourseInfo);
+        console.log(newCalInfo);
+        props.submit(newCalInfo);
         setShow(false);
     }
 
