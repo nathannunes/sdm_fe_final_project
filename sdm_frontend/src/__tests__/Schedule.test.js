@@ -6,6 +6,45 @@ import userEvent from '@testing-library/user-event';
 import Schedule from '../pages/Schedule';
 import conc from '../components/concentrations.json';
 
+const dummy_data = 
+    { 
+        level: "Graduate",
+        courses: [ 
+            { concentration: "Human Centered Computing (HCC)",
+              subjectsList:  
+                [ { code: "CPSC-6110",
+                    name: "Virtual Reality Systems",
+                    prerequisites: null,
+                    offer_date: [ "2023", "2024"],
+                    course_semester: ["FALL", "SPR"]
+                  },
+                  { code: "CPSC-6120",
+                    name: "Eye Tracking Methodology and Applications",
+                    prerequisites: null,
+                    offer_date: [ "2024", "2025"],
+                    course_semester: ["FALL"]
+                  }
+                ]
+            },
+            { concentration: "Software Engineering",
+              subjectsList: 
+              [ { code: "CPSC-6160",
+                  name: "2-D Game Engine Construction",
+                  prerequisites: null,
+                  offer_date: [ "2024"],
+                  course_semester: ["SUM"]
+                },
+                { code: "CPSC-6720",
+                  name: "Software Development Methodology",
+                  prerequisites: null,
+                  offer_date: [ "2023", "2024"],
+                  course_semester: ["SPR"]
+                }
+              ]
+            }
+        ]
+    };
+
 // render the component for testing
 // this will check that components are rendered as expected
 describe('Schedule', () => {
@@ -66,7 +105,6 @@ describe('Schedule', () => {
         expect(screen.getByRole("button", { name: "Submit" } )).toBeInTheDocument();
     })
 
-    // TODO - update this test after the Schedule page has been filled in/completed
     // TODO - add a test for the student/academic advisor roles, once more roles are available to test
     // TODO - update this test as needed to properly reflect the differences in rendering between student/
     // academic advisor and academic administrator (namely, the presense of "Add Course" and "Modify" buttons)
@@ -79,24 +117,23 @@ describe('Schedule', () => {
 
         // only need to check a few items displayed which haven't been tested in other suites
         expect(screen.getByRole("heading", { name: "Course Schedule" })).toBeInTheDocument();
-        //: School of Computing (" + dummy_data.level + ")" })).toBeInTheDocument();
 
-    //     let totalCourses = 0;
-    //     for(let i = 0; i < dummy_data.courses.length; i++) {
-    //         let conc = dummy_data.courses[i];
+        let totalCourses = 0;
+        for(let i = 0; i < dummy_data.courses.length; i++) {
+            let conc = dummy_data.courses[i];
 
-    //         expect(screen.getByRole("heading", { name: conc.concentration }));
+            expect(screen.getByRole("heading", { name: conc.concentration }));
 
-    //         totalCourses = totalCourses + conc.subjectsList.length;  // calcuate the total number of courses displayed
+            totalCourses = totalCourses + conc.subjectsList.length;  // calcuate the total number of courses displayed
 
-    //         for(let j = 0; j < conc.subjectsList.length; j++) {
-    //             expect(screen.getByRole("cell", { name: conc.subjectsList[j].code })).toBeInTheDocument();
-    //             expect(screen.getByRole("cell", { name: conc.subjectsList[j].name })).toBeInTheDocument();
-    //         }
-    //     }
+            for(let j = 0; j < conc.subjectsList.length; j++) {
+                expect(screen.getByRole("cell", { name: conc.subjectsList[j].code + " : " + 
+                                                        conc.subjectsList[j].name })).toBeInTheDocument();
+            }
+        }
 
-    //     // this test may be a bit redundant of CatalogItem tests
-    //     expect(screen.getAllByRole("cell", { name: "Modify" }).length).toBe(totalCourses);
+        // this test may be a bit redundant of CatalogItem tests
+        expect(screen.getAllByRole("cell", { name: "Show Dates" }).length).toBe(totalCourses);
 
         // check for the "Add" button, which is only visible for academic administrators
         expect(screen.getByRole("button", { name: "Add entry" })).toBeInTheDocument();
@@ -164,5 +201,49 @@ describe('Schedule', () => {
 
         expect(consoleOutput).toContain('add course');
         expect(consoleOutput).toContain('close add window');
+    });
+
+    it('Checks display after clicking show dates', () => {
+        sessionStorage.setItem("token", JSON.stringify("yes"));
+        sessionStorage.setItem("user", JSON.stringify("testuser"));
+        sessionStorage.setItem("role", JSON.stringify("USER"));
+        
+        const { rerender } = render(<Schedule />);
+
+        const showBtn = screen.getAllByRole("button", { name: "Show Dates" });
+        // simulate clicking the show button
+        act( () => {
+            userEvent.click(showBtn[0]);
+        });
+
+        // allow the effects of the action to happen...
+        waitFor( () => {
+            screen.getByRole("header");
+        });
+
+        rerender(<Schedule />);
+
+
+        // this is a bit messy bc right now the "Show Dates" button is linked to all rows
+        // (subjects) in a concentration, so clicking btn[0] will expand all subjects for
+        // course[0] -> expect as many "Modify" buttons as offer dates for course[0]
+        // this will also count the number of times each year appears in the list (fragile,
+        // as it depends on dummy data)
+        let totalSemesters = 0;
+        let total2023 = 0;
+        let total2024 = 0;
+        let total2025 = 0;
+        for(let i=0; i<dummy_data.courses[0].subjectsList.length; i++) {
+            totalSemesters = totalSemesters + dummy_data.courses[0].subjectsList[i].offer_date.length;
+            total2023 = total2023 + dummy_data.courses[0].subjectsList[i].offer_date.filter( (date) => date==="2023" ).length;
+            total2024 = total2024 + dummy_data.courses[0].subjectsList[i].offer_date.filter( (date) => date==="2024" ).length;
+            total2025 = total2025 + dummy_data.courses[0].subjectsList[i].offer_date.filter( (date) => date==="2025" ).length;
+        }
+
+        expect(screen.getAllByRole("button", { name: "Modify" }).length).toBe(totalSemesters);
+
+        expect(screen.getAllByRole("button", { name: "2023"} ).length).toBe(total2023);
+        expect(screen.getAllByRole("button", { name: "2024"} ).length).toBe(total2024);
+        expect(screen.getAllByRole("button", { name: "2025"} ).length).toBe(total2025);
     });
 });
