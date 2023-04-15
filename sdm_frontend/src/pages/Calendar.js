@@ -180,7 +180,7 @@ function Calendar() {
                     const data = calData[key];
 
                     return(
-                        <CalendarItem semester={key} dates={data} isAAdm={isAAdm} submit={submitHandler}/>
+                        <CalendarItem semester={key} dates={data} isAAdm={isAAdm} submit={submitHandler} key={Math.random()} />
                     )
                 })}
             </Accordion>
