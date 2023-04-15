@@ -12,7 +12,7 @@ const CalendarItem = (props) => {
 
     const showOverlay = (event) => {
         event.preventDefault();
-        console.log("modify course");
+        console.log("modify calendar item");
         setShow(true);
     }
 

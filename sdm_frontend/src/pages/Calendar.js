@@ -59,7 +59,7 @@ function Calendar() {
 
     const showOverlay = (event) => {
         event.preventDefault();
-        console.log("add course");
+        console.log("add calendar item");
         setShow(true);
     }
 
