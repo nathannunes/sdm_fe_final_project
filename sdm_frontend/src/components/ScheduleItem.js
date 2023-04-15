@@ -32,7 +32,7 @@ const ScheduleItem = (props) => {
         <React.Fragment>
             {props.years.map((year) => {
                 return (
-                    <React.Fragment>
+                    <React.Fragment key={Math.random()}>
                     {props.showDate &&
                         <tr key={props.year}>
                             <td><SplitButton id={props.year + "btn"}
@@ -40,7 +40,7 @@ const ScheduleItem = (props) => {
                                                 drop="end"
                                                 title={<b>{year}</b>}>
                                     {props.semesters.map((sem) => {
-                                        return( <Dropdown.ItemText>{sem}</Dropdown.ItemText> )
+                                        return( <Dropdown.ItemText key={sem}>{sem}</Dropdown.ItemText> )
                                     })}
                                 </SplitButton>
                             </td>

@@ -25,7 +25,7 @@ const CatalogItem = (props) => {
                     <tbody>
                         {props.subjects.map((item) => {
                             return(
-                                <React.Fragment>
+                                <React.Fragment key={Math.random()}>
                                 <tr key={item.code}>
                                     <td><b>{item.code}</b>{": " + item.name}</td>
                                     <td>
@@ -44,6 +44,7 @@ const CatalogItem = (props) => {
                                         semesters={item.course_semester}
                                         isAAdm={props.isAAdm}
                                         showDate={showDate}
+                                        key={Math.random()}
                                     />
                                 </React.Fragment>
                             )
