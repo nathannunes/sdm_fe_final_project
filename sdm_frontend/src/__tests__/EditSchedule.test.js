@@ -123,9 +123,9 @@ describe('EditSchedule', () => {
         expect(consoleOutput[1].concentration).toBe(new_item.conc);
         expect(consoleOutput[1].code).toBe(new_item.code);
         expect(consoleOutput[1].subject).toBe(new_item.name);
-        expect(consoleOutput[1].spring).toBe('on');
-        expect(consoleOutput[1].summer).toBe('on');
-        expect(consoleOutput[1].fall).toBe('on');
+        expect(consoleOutput[1].spring).toBe(true);
+        expect(consoleOutput[1].summer).toBe(true);
+        expect(consoleOutput[1].fall).toBe(true);
 
         for (let i = 0; i < new_item.years.length; i++) {
             expect(consoleOutput[1].years).toContain(new_item.years[i]);

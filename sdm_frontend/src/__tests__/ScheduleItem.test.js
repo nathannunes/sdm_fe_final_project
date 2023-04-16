@@ -60,49 +60,45 @@ describe('ScheduleItem', () => {
     });
 
     it('renders ScheduleItem component: student, academic advisor', () => {
-        render(<ScheduleItem course={mock_item.subjectsList[0].code}
+        render(<table><tbody><ScheduleItem course={mock_item.subjectsList[0].code}
                             name={mock_item.subjectsList[0].name}
                             concentration={mock_item.concentration}
-                            years={mock_item.subjectsList[0].offer_date}
+                            years={mock_item.subjectsList[0].offer_date[0]}
                             semesters={mock_item.subjectsList[0].course_semester}
                             isAAdm={false}
                             showDate={true}
-        />);
+        /></tbody></table>);
 
-        // when showing dates, this will only display buttons with the offer_dates
-        for(let i=0; i<mock_item.subjectsList[0].offer_date.length; i++) {
-            expect(screen.getByRole("button", { name: mock_item.subjectsList[0].offer_date[i] })).toBeInTheDocument();
-        }
+        // when showing dates, this will only display buttons with the offer_date in props.years
+        expect(screen.getByRole("button", { name: mock_item.subjectsList[0].offer_date[0] })).toBeInTheDocument();
     });
 
     it('renders ScheduleItem component: academic administrator', () => {
-        render(<ScheduleItem course={mock_item.subjectsList[0].code}
+        render(<table><tbody><ScheduleItem course={mock_item.subjectsList[0].code}
             name={mock_item.subjectsList[0].name}
             concentration={mock_item.concentration}
-            years={mock_item.subjectsList[0].offer_date}
+            years={mock_item.subjectsList[0].offer_date[0]}
             semesters={mock_item.subjectsList[0].course_semester}
             isAAdm={true}
             showDate={true}
-        />);
+        /></tbody></table>);
 
-        // when showing dates, this will only display buttons with the offer_dates
-        for(let i=0; i<mock_item.subjectsList[0].offer_date.length; i++) {
-            expect(screen.getByRole("button", { name: mock_item.subjectsList[0].offer_date[i] })).toBeInTheDocument();
-        }
+        // when showing dates, this will only display buttons with the offer_date in props.years
+        expect(screen.getByRole("button", { name: mock_item.subjectsList[0].offer_date[0] })).toBeInTheDocument();
 
         // also expect there to be a modify button for each
-        expect(screen.getAllByRole("button", { name: "Modify" }).length).toBe(mock_item.subjectsList[0].offer_date.length);
+        expect(screen.getByRole("button", { name: "Modify" })).toBeInTheDocument();
     });
 
     it('checks schedule modify overlay', () => {
-        const { rerender } = render(<ScheduleItem course={mock_item.subjectsList[0].code}
+        const { rerender } = render(<table><tbody><ScheduleItem course={mock_item.subjectsList[0].code}
                                         name={mock_item.subjectsList[0].name}
                                         concentration={mock_item.concentration}
                                         years={mock_item.subjectsList[0].offer_date}
                                         semesters={mock_item.subjectsList[0].course_semester}
                                         isAAdm={true}
                                         showDate={true}
-                            />);
+                            /></tbody></table>);
 
         // get all the modify buttons that are shown, select one to
         // test the overlay, since they are all connected to the same
@@ -120,14 +116,14 @@ describe('ScheduleItem', () => {
         });
 
         // re-render the page
-        rerender(<ScheduleItem course={mock_item.subjectsList[0].code}
+        rerender(<table><tbody><ScheduleItem course={mock_item.subjectsList[0].code}
             name={mock_item.subjectsList[0].name}
             concentration={mock_item.concentration}
             years={mock_item.subjectsList[0].offer_date}
             semesters={mock_item.subjectsList[0].course_semester}
             isAAdm={true}
             showDate={true}
-        />);
+        /></tbody></table>);
 
         // check for the submit and close buttons
         const cls = screen.getAllByRole("button", { name: "Close" }); 
@@ -142,14 +138,12 @@ describe('ScheduleItem', () => {
         }
 
         // check for textboxes to enter code and name
-        // for some reason these are "Course X Course X"
-        expect(screen.getAllByRole("textbox", { name: "Course code Course code" }).length >= 1);
-        expect(screen.getAllByRole("textbox", { name: "Course name Course name"}).length >=1 );
+        expect(screen.getAllByRole("textbox", { name: "Course code" }).length >= 1);
+        expect(screen.getAllByRole("textbox", { name: "Course name"}).length >=1 );
 
-        // like the textboxes, these are named "Sem Sem" for some reason
-        expect(screen.getByRole("checkbox", { name: "Spring Spring" })).toBeInTheDocument();
-        expect(screen.getByRole("checkbox", { name: "Summer Summer" })).toBeInTheDocument();
-        expect(screen.getByRole("checkbox", { name: "Fall Fall" })).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: "Spring" })).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: "Summer" })).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: "Fall" })).toBeInTheDocument();
 
         // simulate clicking the close button, which should hide the overlay
         act( () => {

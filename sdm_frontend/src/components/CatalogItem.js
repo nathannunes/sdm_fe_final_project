@@ -37,15 +37,17 @@ const CatalogItem = (props) => {
                                         placeholder
                                     </td>
                                 </tr>
-                                    <ScheduleItem course={item.code}
-                                        name={item.name}
-                                        concentration={props.concentration}
-                                        years={item.offer_date}
-                                        semesters={item.course_semester}
-                                        isAAdm={props.isAAdm}
-                                        showDate={showDate}
-                                        key={Math.random()}
-                                    />
+                                    {item.offer_date.map((year) => {
+                                        return (<ScheduleItem course={item.code}
+                                            name={item.name}
+                                            concentration={props.concentration}
+                                            years={year}
+                                            semesters={item.course_semester}
+                                            isAAdm={props.isAAdm}
+                                            showDate={showDate}
+                                            key={Math.random()}
+                                        />)
+                                    })}
                                 </React.Fragment>
                             )
                         })}

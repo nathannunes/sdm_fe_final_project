@@ -28,50 +28,43 @@ const ScheduleItem = (props) => {
         setShow(false);
     }
 
-    return (
-        <React.Fragment>
-            {props.years.map((year) => {
-                return (
-                    <React.Fragment key={Math.random()}>
-                    {props.showDate &&
-                        <tr key={props.year}>
-                            <td><SplitButton id={props.year + "btn"}
-                                                variant="warning"
-                                                drop="end"
-                                                title={<b>{year}</b>}>
-                                    {props.semesters.map((sem) => {
-                                        return( <Dropdown.ItemText key={sem}>{sem}</Dropdown.ItemText> )
-                                    })}
-                                </SplitButton>
-                            </td>
-                            <td></td>
-                            <td>
-                                {props.isAAdm && <Button bsPrefix="btn-custom" className="logout" onClick={showOverlay}>Modify</Button>}
-                                <Offcanvas show={show} onHide={closeOverlay}>
-                                    <Offcanvas.Header closeButton>
-                                        <Offcanvas.Title>Modify Course Schedule: {props.course}</Offcanvas.Title>
-                                    </Offcanvas.Header>
-                                    <Offcanvas.Body>
-                                        Note: leave placeholder text for items not changed
+    if (props.showDate) {
+        return (
+            <tr key={props.years}>
+                <td><SplitButton id={props.years + "btn"}
+                                    variant="warning"
+                                    drop="end"
+                                    title={<b>{props.years}</b>}>
+                        {props.semesters.map((sem) => {
+                            return( <Dropdown.ItemText key={sem}>{sem}</Dropdown.ItemText> )
+                        })}
+                    </SplitButton>
+                </td>
+                <td></td>
+                <td>
+                    {props.isAAdm && <Button bsPrefix="btn-custom" className="logout" onClick={showOverlay}>Modify</Button>}
+                    <Offcanvas show={show} onHide={closeOverlay}>
+                        <Offcanvas.Header closeButton>
+                            <Offcanvas.Title>Modify Course Schedule: {props.course}</Offcanvas.Title>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            Note: leave placeholder text for items not changed
 
-                                        <EditSchedule concentration={props.concentration}
-                                            code={props.course}
-                                            subject={props.name}
-                                            inSpring={props.semesters.includes("SPR")}
-                                            inSummer={props.semesters.includes("SUM")}
-                                            inFall={props.semesters.includes("FALL")}
-                                            years={props.years.toString()}
-                                            submit={submitHandler}/>
-                                    </Offcanvas.Body>
-                                </Offcanvas>
-                            </td>
-                        </tr>
-                    }
-                    </React.Fragment>
-                )
-            })}
-        </React.Fragment>
-    )
+                            <EditSchedule concentration={props.concentration}
+                                code={props.course}
+                                subject={props.name}
+                                inSpring={props.semesters.includes("SPR")}
+                                inSummer={props.semesters.includes("SUM")}
+                                inFall={props.semesters.includes("FALL")}
+                                years={props.years.toString()}
+                                submit={submitHandler}/>
+                        </Offcanvas.Body>
+                    </Offcanvas>
+                </td>
+            </tr>
+        )
+    }
+    else { return <></> }
 };
 
 export default ScheduleItem;

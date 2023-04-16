@@ -167,14 +167,12 @@ describe('CatalogItem', () => {
         }
 
         // check for textboxes to enter code and name
-        // for some reason these are "Course X Course X"
-        expect(screen.getAllByRole("textbox", { name: "Course code Course code" }).length >= 1);
-        expect(screen.getAllByRole("textbox", { name: "Course name Course name"}).length >=1 );
+        expect(screen.getAllByRole("textbox", { name: "Course code" }).length >= 1);
+        expect(screen.getAllByRole("textbox", { name: "Course name"}).length >=1 );
 
-        // like the textboxes, these are named "Sem Sem" for some reason
-        expect(screen.getByRole("checkbox", { name: "Spring Spring" })).toBeInTheDocument();
-        expect(screen.getByRole("checkbox", { name: "Summer Summer" })).toBeInTheDocument();
-        expect(screen.getByRole("checkbox", { name: "Fall Fall" })).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: "Spring" })).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: "Summer" })).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: "Fall" })).toBeInTheDocument();
 
         // simulate clicking the close button, which should hide the overlay
         act( () => {
