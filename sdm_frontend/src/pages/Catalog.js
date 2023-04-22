@@ -115,6 +115,8 @@ function Catalog() {
       showToastFun("Course Created Successfully", "success");
     });
 
+    renderUpdatedCode(newCourseInfo);
+
     setShow(false);
   };
 
