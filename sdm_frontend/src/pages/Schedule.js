@@ -7,7 +7,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import Dashboard from '../components/Dashboard';
 import SelectRole from '../components/SelectRole';
 import EditSchedule from '../components/EditSchedule';
-import CatalogItem from '../components/CatalogItem';
+import CatalogItem from '../components/CatalogItem_2';
 
 import '../components/Button.css';
 import Login from '../components/Login';

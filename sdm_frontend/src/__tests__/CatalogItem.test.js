@@ -3,7 +3,7 @@ import { describe, expect } from '@jest/globals';
 import { render, screen, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import CatalogItem from '../components/CatalogItem';
+import CatalogItem from '../components/CatalogItem_2';
 import conc from '../components/concentrations.json';
 
 // this will check that session storage for user name and role are set as expected
