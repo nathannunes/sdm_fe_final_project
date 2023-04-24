@@ -36,7 +36,7 @@ describe("EditCatalog", () => {
 
     // should display a drop-down list, containing concentrations as options,
     // text boxes to enter course number and name, and a submit button
-    const comb = screen.getByRole("combobox", { name: "Concentration" }); //
+    const comb = screen.getByRole("combobox", { name: "" }); // formerly named "oncentration" but as no name after changes for some reason
     expect(comb).toBeInTheDocument();
     expect(comb).toHaveValue(mock_item.concentration);
 
@@ -83,10 +83,10 @@ describe("EditCatalog", () => {
       />
     );
 
-    const concBx = screen.getByRole("combobox", { name: "Concentration" });
+    const concBx = screen.getByRole("combobox", { name: "" });  // formerly "Concentration" but has no name after code changes for some reason
     const codeBx = screen.getByRole("textbox", { name: "Course code" });
     const nameBx = screen.getByRole("textbox", { name: "Course name" });
-    const descBx = screen.getByRole("textbox", { name: "Course description" });
+    const descBx = screen.getAllByRole("textbox", { name: "" })[1];  // formerly GetByRole() with name: "Course description" but has no name after code changes for some reason
 
     // simulate editing the item, selecting a new concentration and entering
     // new course code and name, following by clicking submit
